@@ -1,4 +1,4 @@
-# UMBC DATA 606 Capstone Project
+# UMBC-DATA-606-Capstone
 
 This repository is the main workspace for my DATA 606 Capstone at the University of Maryland, Baltimore County (UMBC).
 
