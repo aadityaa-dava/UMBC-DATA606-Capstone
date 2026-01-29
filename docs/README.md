@@ -1,5 +1,11 @@
-# Documentation
+# Docs
 
-This folder contains written documents related to the capstone project.
+This folder contains documentation for my capstone repository.
 
-It may include proposals, progress notes, reports, or reference material that help explain the purpose, process and outcomes of the project.
+## Files
+
+- **Resume.md**  
+  My professional resume written in Markdown format as part of the capstone assignment.
+
+- **headshot.jpg**  
+  Headshot image used in the resume.
