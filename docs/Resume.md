@@ -1,6 +1,6 @@
 # Aadityaa Dava
 
-![Headshot](headshot.jpg)
+![Headshot]()
 
 **Location:** Maryland, USA  
 **Phone:** +1 (410) 710-5194  
