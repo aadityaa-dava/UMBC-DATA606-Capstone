@@ -1,5 +1,5 @@
 # Application
 
-This folder is intended for application-related work connected to the capstone project.
+This folder contains files related to the application part of the project.
 
-If the project includes a dashboard, visualization or interactive tool, the relevant code and files will be stored here.
+It may include scripts or code used to run or demonstrate the project.
