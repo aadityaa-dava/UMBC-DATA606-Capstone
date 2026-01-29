@@ -18,7 +18,4 @@ Everything related to the project lives here — from datasets and analysis note
 - **docs/**  
   Includes written material such as reports, notes, and references related to the capstone.
 
-- **Resume.md**  
-  My professional resume written using Markdown.
-
 This repository will continue to evolve as new work is added throughout the semester.
