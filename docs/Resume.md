@@ -2,138 +2,123 @@
 
 ![Headshot](headshot.jpg)
 
-📍 Maryland, USA  
-📞 +1 (410) 710-5194  
-📧 aadityaa.dava@gmail.com  
+**Location:** Maryland, USA  
+**Phone:** +1 (410) 710-5194  
+**Email:** aadityaa.dava@gmail.com  
 
 ---
 
-## Professional Summary
+## Summary
 
-Graduate student pursuing a **Master of Professional Studies in Data Science** at the University of Maryland, Baltimore County (UMBC).  
-Experienced in **data analysis, SQL, Python, and applied machine learning**, with a strong focus on **exploratory analysis, dashboards, and insight-driven decision making**.  
-Currently working as a **Graduate Grader at UMBC**, supporting academic assessment and maintaining data accuracy.  
-Seeking analytics-focused roles involving **business insights, customer behavior, and data storytelling**.
+I am a graduate student in the Master of Professional Studies in Data Science program at the University of Maryland, Baltimore County. I have hands-on experience working with Python, SQL, and data analysis, and I enjoy exploring data to find meaningful patterns and insights. Along with my coursework, I currently work as a Graduate Grader at UMBC, where I assist with evaluating student work and maintaining academic standards. I am interested in analytics roles that involve data-driven decision making and real-world problem solving.
 
 ---
 
 ## Education
 
-### 🎓 University of Maryland, Baltimore County (UMBC)
-**Master of Professional Studies (M.P.S.) in Data Science**  
-*Jan 2025 – Dec 2026*  
+### University of Maryland, Baltimore County (UMBC)
+**Master of Professional Studies in Data Science**  
+Jan 2025 – Dec 2026  
 **GPA:** 3.95
 
 ---
 
-### 🎓 Jawaharlal Nehru Technological University Hyderabad (JNTUH)
+### Jawaharlal Nehru Technological University Hyderabad (JNTUH)
 **Bachelor of Technology in Information Technology**  
-*Graduated: June 2024*  
+Graduated: June 2024  
 **GPA:** 3.2
 
 ---
 
 ## Experience
 
-### 🧑‍🏫 Graduate Academic Grader — University of Maryland, Baltimore County
-*Jan 2025 – Present*
+### Graduate Academic Grader — University of Maryland, Baltimore County
+Jan 2025 – Present
 
-- Evaluate assignments, projects, and assessments for graduate-level coursework with high accuracy and consistency.
-- Apply detailed rubrics to ensure fair and transparent grading.
-- Provide constructive feedback to support student learning and improvement.
-- Maintain confidentiality and academic integrity in accordance with university policies.
-- Collaborate with course instructors to clarify grading criteria and resolve discrepancies.
+- Grade assignments and projects for graduate-level courses based on provided rubrics.
+- Ensure consistency and fairness while evaluating student submissions.
+- Provide written feedback to help students understand mistakes and improve.
+- Follow university guidelines related to academic integrity and confidentiality.
+- Coordinate with instructors when clarification is needed during grading.
 
 ---
 
 ## Technical Skills
 
-### Programming & Querying
-- Python, SQL, Java, PHP
+**Programming and Querying**
+- Python, C, C++, Java, PHP
 
-### Analytics & Statistics
-- Exploratory Data Analysis (EDA)
-- KPI Definition & Trend Analysis
-- Hypothesis Testing
-- Data Cleaning & Preprocessing
+**Data Analysis**
+- Exploratory Data Analysis
+- Data Cleaning and Preprocessing
+- Trend Analysis
+- Basic Statistical Analysis
 
-### Visualization & Business Intelligence
+**Data Visualization**
 - Tableau, Power BI
-- Microsoft Excel (Dashboards, Pivot Tables, Charts)
+- Microsoft Excel (charts, pivot tables, dashboards)
 - Matplotlib
-- Data Storytelling
 
-### Machine Learning (Applied)
-- Regression & Classification
+**Machine Learning**
+- Regression and Classification
 - Feature Engineering
 - Model Evaluation
 - Scikit-learn, Pandas, NumPy
 
-### Databases & Tools
+**Databases and Tools**
 - MySQL, MongoDB
-- Data Extraction & Query Optimization
-- Git, Agile/Scrum, Documentation
+- Git
+- Basic Agile workflow
 
 ---
 
 ## Projects
 
-### 🌧️ Rain Prediction Model
-**Python | Pandas | Scikit-learn**  
-*May 2025*
-
-- Conducted comprehensive exploratory data analysis on meteorological datasets to uncover trends, seasonality, and correlations.
-- Cleaned and preprocessed data by handling missing values, outliers, and feature scaling.
-- Engineered meaningful features to improve interpretability and analytical depth.
-- Built regression and classification models to analyze rainfall behavior.
-- Evaluated models using accuracy, R² score, and confusion matrices.
-- Designed an interactive dashboard to clearly communicate insights and predictions.
+### **Rain Prediction Model** — *May 2025*
+- Explored historical weather data to understand rainfall patterns.
+- Cleaned datasets by handling missing values and outliers.
+- Built regression and classification models to study rainfall behavior.
+- Evaluated model results using accuracy, R² score, and confusion matrices.
+- Created visualizations to present findings clearly.
 
 ---
 
-### 🚕 NYC Taxi Fare Prediction
-**Python | PySpark | Pandas | Matplotlib**  
-*Oct 2025*
-
-- Performed large-scale exploratory analysis on ride-level taxi data.
-- Analyzed pricing behavior across distance, passenger count, pickup locations, and time-based patterns.
-- Engineered analytical features including geospatial distance metrics and peak-hour indicators.
-- Compared multiple analytical models to understand trade-offs and feature importance.
-- Communicated insights through visualizations tailored for non-technical audiences.
+### **NYC Taxi Fare Analysis** — *Oct 2025*
+- Analyzed taxi trip data to understand fare patterns.
+- Studied the impact of distance, passenger count, and time of day on pricing.
+- Created features such as peak-hour indicators and trip distance.
+- Compared model outputs to understand feature influence.
+- Used charts and plots to explain insights.
 
 ---
 
-### 🚨 Accident Detection and Notification System
-**AWS | IoT | Python**  
-*2024*
-
-- Designed an end-to-end pipeline for real-time sensor data collection and analysis.
-- Implemented threshold-based analytical logic to detect abnormal events.
-- Integrated AWS cloud services for automated data ingestion and notification workflows.
-- Evaluated system performance using detection accuracy and notification latency.
-- Documented architecture and analytical findings for research publication.
-
+### **Accident Detection and Notification System** — *Jan 2024*
+- Developed a system to detect vehicle accidents using real-time sensor data.
+- Designed a data pipeline for sensor data collection and processing.
+- Integrated AWS services to trigger automated notifications.
+- Tested the system for detection accuracy and response time.
+- Contributed to technical documentation for a published research paper.
+ 
 ---
 
 ## Publications
 
-**Implementing an Accident Detection and Notification System Using AWS**  
-*International Journal of Engineering Science and Advanced Technology (IJESAT)*  
-Vol. 24, Issue 06, June 2024, pp. 92–97
+Implementing an Accident Detection and Notification System Using AWS  
+International Journal of Engineering Science and Advanced Technology (IJESAT), June 2024
 
 ---
 
-## Workshops & Certifications
+## Workshops and Training
 
-- **SQL for Data Analytics Bootcamp** — July 2024  
-- **Data Visualization and Power BI Workshop** — October 2024  
-- **AI and Machine Learning Workshop** — April 2023  
+- SQL for Data Analytics Bootcamp — July 2024
+- Data Visualization and Power BI Workshop — October 2024
+- AI and Machine Learning Workshop — April 2023
 
 ---
 
 ## Interests
 
-- Data Analytics & Visualization  
-- Business Insights & Storytelling  
-- Real-world Data Problem Solving  
-- Continuous Learning in Data Science
+- Working with real-world datasets  
+- Data visualization and storytelling  
+- Learning new tools in data science  
+- Problem solving through data
