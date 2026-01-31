@@ -2,7 +2,7 @@
 
 This repository is the main workspace for my DATA 606 Capstone at the University of Maryland, Baltimore County (UMBC).
 
-Everything related to the project lives here — from datasets and analysis notebooks to documentation and application code. The structure of the repository is meant to keep things organized and easy to follow as the project develops over time.
+Everything related to the project lives here - from datasets and analysis notebooks to documentation and application code. The structure of the repository is meant to keep things organized and easy to follow as the project develops over time.
 
 ## What’s Inside
 
