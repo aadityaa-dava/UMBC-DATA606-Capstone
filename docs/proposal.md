@@ -84,3 +84,5 @@ On the data science side, this project also shows how text data on a large-scale
 - **Complaint root cause** will be the target variable for the modeling.
   
 **Which variables/columns may be selected as features/predictors for your ML models?**
+- The primary column used will be **Consumer complaint narrative**.
+- **Supporting features:** Product, Sun-Product, Issue, Company and Date received.
