@@ -42,12 +42,20 @@ On the data science side, this project also shows how text data on a large-scale
 
 ## 3. Data 
 
-Describe the datasets you are using to answer your research questions.
-
 - Data sources
-- Data size (MB, GB, etc.)
-- Data shape (# of rows and # columns)
-- Time period (for example, 2010 to 2020) if your data are time-bound
+
+The dataset is obtained from **Consumer Complaint Database** maintained by the Consumer Financial Protection Bureau(CFPB). This dataset contains complaints from the customers against financial institutions in United States.
+
+The original dataset was filtered to include only:
+- complaints submitted by consumers in Washington state
+- complaints received between February 2, 2016 and February 2, 2026.
+
+- Data size
+~85 MB (combined CSV files)
+- Data shape
+Number of rows: 110,879
+Number of columns: 18 
+Time period: 02/02/2016 - 02/02/2026
 - **What does each row represent?(a patient, a school, a crime, etc.)**
 - Data dictionary
   - Columns name
