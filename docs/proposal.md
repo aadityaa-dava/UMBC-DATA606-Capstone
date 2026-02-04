@@ -42,25 +42,45 @@ On the data science side, this project also shows how text data on a large-scale
 
 ## 3. Data 
 
-- **Data sources**
+**Data sources**
 
-The dataset is obtained from **Consumer Complaint Database** maintained by the Consumer Financial Protection Bureau(CFPB). This dataset contains complaints from the customers against financial institutions in Washington(WA).
+- The dataset is obtained from **Consumer Complaint Database** maintained by the Consumer Financial Protection Bureau(CFPB). This dataset contains complaints from the customers against financial institutions in Washington(WA).
+- https://www.consumerfinance.gov/data-research/consumer-complaints/#get-the-data
 
-- **Data size**
-~85 MB (combined CSV files)
+**Data size**
+- ~85 MB (combined CSV files)
 
-- **Data shape**
-Number of rows: 110,879
-Number of columns: 18
+**Data shape**
+- Number of rows: 110,879
+- Number of columns: 18
 
-- **Time period:** 02/02/2016 - 02/02/2026
-- **What does each row represent?**
+**Time period:** 
+- 02/02/2016 - 02/02/2026
+ 
+**What does each row represent?**
+- Each row in the dataset represents **one individual consumer complaint**
+ 
+**Data dictionary**
+
+| Column Name | Data Type | Definition | Potential Values |
+|------------|----------|------------|------------------|
+| Date received | Date | Date the complaint was received by the CFPB | YYYY-MM-DD |
+| Product | Categorical | Financial product involved in the complaint | Credit reporting, Mortgage, Student loan, Bank account, etc. |
+| Sub-product | Categorical | More specific category of the financial product | Varies by product |
+| Issue | Categorical | Primary issue reported by the consumer | Billing disputes, Incorrect information, Payment issues |
+| Sub-issue | Categorical | More detailed description of the issue | Varies |
+| Consumer complaint narrative | Text | Free-text description of the complaint submitted by the consumer | Unstructured text |
+| Company | Categorical | Name of the company named in the complaint | Financial institution names |
+| State | Categorical | State where the consumer resides | WA |
+| ZIP code | Categorical | Partial ZIP code of the consumer | 981XX, 983XX |
+| Submitted via | Categorical | Channel through which the complaint was submitted | Web, Phone |
+| Company response to consumer | Categorical | Outcome of the company’s response | Closed, In progress |
+| Timely response? | Categorical | Indicates whether the company responded on time | Yes, No |
+| Consumer disputed? | Categorical | Indicates whether the consumer disputed the company’s response | Yes, No |
+| Complaint ID | Numeric | Unique identifier for each complaint | Integer |
+
+**Which variable/column will be your target/label in your ML model?**
+- This project does not have any target variable provided in the dataset, the target variable is derived during the analysis.
+- **Complaint root cause** will be the target variable for the modeling.
   
-Each row in the dataset represents **one individual consumer complaint**
-- Data dictionary
-  - Columns name
-  - Data type
-  - Defition
-  - Potential values (for categorical valuables, what are the categories?)
-- Which variable/column will be your target/label in your ML model?
-- Which variables/columns may be selected as features/predictors for your ML models?
+**Which variables/columns may be selected as features/predictors for your ML models?**
