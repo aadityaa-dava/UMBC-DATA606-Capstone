@@ -48,7 +48,7 @@ On the data science side, this project also shows how text data on a large-scale
 - https://www.consumerfinance.gov/data-research/consumer-complaints/#get-the-data
 
 **Data size**
-- ~85 MB (combined CSV files)
+- 85.6 MB (combined CSV files)
 
 **Data shape**
 - Number of rows: 110,879
