@@ -1,10 +1,10 @@
-# Report
- 
+
 ## 1. Title and Author
 
-- Analysis of Consumer Complaint Root Causes Using Large Language Models
+- Project Title -  **Analysis of Consumer Complaint Root Causes Using Large Language Models**
+- Author - Aadityaa Dava
+- Semester - Spring'26
 - Prepared for UMBC Data Science Master Degree Capstone by Dr Chaojie (Jay) Wang
-- Aadityaa Dava
 - Link to the author's GitHub repo of the project: https://github.com/aadityaa-dava/UMBC-DATA606-Capstone
 - Link to the author's LinkedIn profile: www.linkedin.com/in/aadityaa-dava-688908308
     
