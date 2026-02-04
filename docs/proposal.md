@@ -55,6 +55,8 @@ Number of columns: 18
 
 - **Time period:** 02/02/2016 - 02/02/2026
 - **What does each row represent?**
+  
+Each row in the dataset represents **one individual consumer complaint**
 - Data dictionary
   - Columns name
   - Data type
