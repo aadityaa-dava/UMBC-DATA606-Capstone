@@ -1,19 +1,12 @@
-# The Template and Guideline for the Final Report
-
-- This document serves as a guide for developing project proposal which will eventually become the proposal and final report.
-- You start with the end in mind and adopt an agile approach:
-  - Making progress continuously towards your goal.
-  - Updating this document continuously along the way.
+# Report
  
 ## 1. Title and Author
 
-- Project Title
+- Analysis of Consumer Complaint Root Causes Using Large Language Models
 - Prepared for UMBC Data Science Master Degree Capstone by Dr Chaojie (Jay) Wang
-- Author Name 
-- Link to the author's GitHub repo of the project
-- Link to the author's LinkedIn profile
-- Link to your PowerPoint presentation file
-- Link to your YouTube video 
+- Aadityaa Dava
+- Link to the author's GitHub repo of the project: https://github.com/aadityaa-dava/UMBC-DATA606-Capstone
+- Link to the author's LinkedIn profile: www.linkedin.com/in/aadityaa-dava-688908308
     
 ## 2. Background
 
