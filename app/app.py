@@ -80,7 +80,7 @@ st.sidebar.header("Methodology")
 
 st.sidebar.markdown("""
 **Data Source:**  
-U.S. Census Bureau – American Community Survey (ACS) 5-year estimates
+U.S. Census Bureau – American Community Survey (ACS)
 """)
 
 with st.sidebar.expander("What is this app doing?", expanded=True):
