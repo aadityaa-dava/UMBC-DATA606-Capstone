@@ -17,7 +17,7 @@ st.caption("County-level risk ranking using ACS 5-Year indicators")
 # ---------------------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("county_master.csv")
+    df = pd.read_csv("data/county_master.csv")
     df["county_fips"] = df["county_fips"].astype(int).astype(str).str.zfill(5)
     df["state"] = df["county_name"].str.split(", ").str[-1].str.strip()
     return df
