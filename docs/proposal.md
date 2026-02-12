@@ -1,8 +1,8 @@
 
 ## 1. Title and Author
 
-- Project Title -  **Analysis of Consumer Complaint Root Causes Using Large Language Models**
-- Author - Aadityaa Dava
+- Project Title -  **Identifying U.S. Counties at Risk of Economic Decline Using Public Socioeconomic Indicators**
+- Author - *Aadityaa Dava*
 - Semester - Spring'26
 - Prepared for UMBC Data Science Master Degree Capstone by Dr Chaojie (Jay) Wang
 - Link to the author's GitHub repo of the project: https://github.com/aadityaa-dava/UMBC-DATA606-Capstone
@@ -10,79 +10,86 @@
     
 ## 2. Background
 
-Provide the background information about the chosen topic. 
-
 - **What is it about?**
 
-Each year financial institutions get a lot of customer complaints. These usually are a representation of actual issues by the customers, including billing mistakes, poor credit reporting, slow customer service or slow response. Although the complaints are addressed one at a time, it is hard to see the bigger picture when considering complaints one at a time and it is hard to see how the recurring issues or patterns in the system.
-
-This project aims at studying the customer complaint stories in establishing the causal factors that led to customer dissatisfaction. The project analyses the actual text used by the consumers instead of simple dependence on preset categories like product type or labels of issues to understand what went wrong and why.
-
-This project is based on the complaint data provided by the Consumer Financial Protection Bureau (CFPB), which has been filtered to cover the state of Washington between 2016 and 2026 and uses modern text analysis methods to cluster similar issues and determine typical underlying causes. The aim is to transform unstructured texts of complaints to insights that may be analyzed using visualizations and an interactive application.
+The project focuses on identifying counties in the United States that may be at risk of economic decline based on actual data of the American Community Survey (ACS). I rely on such valuable clues as the level of income, the degree of poverty, unemployment, education, and homeownership to know the economic situation in this or that county. All these factors are put together as one economic risk score, which assists in ranking the counties as to low, medium, and high risk. This analysis will be made transparent and easy to understand and the results will be presented in a streamlit application and interactive visualizations so that the users can explore and understand the economic risk of an entire country in a very simple manner.
 
 - **Why does it matter?**
 
-Direct feedback on consumers provided by customers is referred to as customer complaints, which is not sufficiently used. Most times, organizations pay attention to individual case closures without even knowing to the fullest, whether the cases are recurring. Consequently, systemic issues might end up years in duration term without their correct resolution.
+The significance of this project is that the economic issues have an impact on ordinary life. A people may find it difficult to secure employment, income levels will be reduced and poverty levels will rise when a county begins to deteriorate. This may also spill over to schools, health services, accommodation, and general standards of living. It is possible to determine counties that are potentially at increased risk and, in this way, comprehend communities that could require more support and attention.
 
-This is a relevant project since it assists in shifting toward reactive complaint management to initiation of proactive insights. Through the determination of root causes that have been recurring in thousands of complaints, organizations can focus on the improvements that can have the most significant impact on customer experience. To illustrate, when there are a number of complaints claiming similarities in billing or reporting, this is the indication that changes in processes or systems need to take place instead of the individual fixes.
-
-On the data science side, this project also shows how text data on a large-scale level can be analyzed in a systematic manner. It demonstrates how unstructured data which is usually deemed hard to manipulate can be converted into enactable information that can be used to make decisions.
+It is also important as it converts raw data into something useful and easily comprehensible. This project does not consider a single number, such as income or unemployment, but a combination of several meaningful indicators into a single risk score. It is thus more convenient to match counties with each other in a clear and fair manner. It demonstrates how one can use public data to draw insights that can make people make better decisions.
 
 **What are your research questions?**
 
-1. What are the leading underlying root causes of customer complaints in Washington state?
-    
-2. What are the root causes of complaints in the various financial product lines (credit reporting, loans and banking services)?
+1. Which U.S. counties are at the highest risk of economic decline based on key socioeconomic indicators?
 
-3. Has the patterns of customer complaint themes and root causes changed over years since 2016 to 2026?
-	
-4. How far can complaint stories be clustered into consistent and meaningful root-cause categories on the basis of their contents?
-	
-5. What can be the best way of presenting insights made by complaint analysis in the form of visualization and interactive tools?
+2. How do income, poverty, unemployment, education, and homeownership together influence a county's economic risk?
+
+3. Are there noticeable geographic patterns in economic risk across different states or regions?
+
+4. Can we create a clear and transparent scoring method that combines multiple indicators into one meaningful economic risk score?
 
 ## 3. Data 
 
 **Data sources**
 
-- The dataset is obtained from **Consumer Complaint Database** maintained by the Consumer Financial Protection Bureau(CFPB). This dataset contains complaints from the customers against financial institutions in Washington(WA).
-- https://www.consumerfinance.gov/data-research/consumer-complaints/#get-the-data
+- This project uses data from the U.S. Census Bureau’s American Community Survey (ACS) 5-Year Estimates. The ACS is a nationally recognized and reliable public dataset that provides detailed socioeconomic information at the county level.
+
+The specific ACS tables used include:
+
+* Total Population (B01003) – to understand county size
+
+* Median Household Income (B19013) – to measure economic strength
+
+* Poverty Rate (B17001) – to measure economic hardship
+
+* Unemployment Rate (B23025) – to measure labor market conditions
+
+* Education Level (B15003) – percentage of adults with a bachelor’s degree or higher
+
+* Homeownership Rate (B25003) – to understand housing stability
+
+All datasets are publicly available from the U.S. Census Bureau website and were merged using county codes to create a unified county-level dataset for analysis.
+
+https://data.census.gov/table?g=010XX00US$0500000
 
 **Data size**
-- 85.6 MB (combined CSV files)
 
-**Data shape**
-- Number of rows: 110,879
-- Number of columns: 18
+~10 MB
+
+**Final Shape**
+- Number of rows: 3222
+- Number of columns: 9
 
 **Time period:** 
-- 02/02/2016 - 02/02/2026
+- 5-Year Estimates (2019–2023)
  
 **What does each row represent?**
-- Each row in the dataset represents **one individual consumer complaint**
+- Each row represents one U.S. county.
+
+More specifically, each row contains the socioeconomic data for a single county with its Population, Median household income, Poverty rate, Unemployment rate, Education level (Bachelor’s or higher %), Homeownership rate, Calculated economic risk score and Risk category(derived)
  
 **Data dictionary**
 
 | Column Name | Data Type | Definition | Potential Values |
 |------------|----------|------------|------------------|
-| Date received | Date | Date the complaint was received by the CFPB | YYYY-MM-DD |
-| Product | Categorical | Financial product involved in the complaint | Credit reporting, Mortgage, Student loan, Bank account, etc. |
-| Sub-product | Categorical | More specific category of the financial product | Varies by product |
-| Issue | Categorical | Primary issue reported by the consumer | Billing disputes, Incorrect information, Payment issues |
-| Sub-issue | Categorical | More detailed description of the issue | Varies |
-| Consumer complaint narrative | Text | Free-text description of the complaint submitted by the consumer | Unstructured text |
-| Company | Categorical | Name of the company named in the complaint | Financial institution names |
-| State | Categorical | State where the consumer resides | WA |
-| ZIP code | Categorical | Partial ZIP code of the consumer | 981XX, 983XX |
-| Submitted via | Categorical | Channel through which the complaint was submitted | Web, Phone |
-| Company response to consumer | Categorical | Outcome of the company’s response | Closed, In progress |
-| Timely response? | Categorical | Indicates whether the company responded on time | Yes, No |
-| Consumer disputed? | Categorical | Indicates whether the consumer disputed the company’s response | Yes, No |
-| Complaint ID | Numeric | Unique identifier for each complaint | Integer |
+| county_fips | String (5-digit code) | Unique FIPS identifier for each U.S. county | 01001, 06037, 17031 |
+| county_name | Text | Full county name including state | Autauga County, Alabama |
+| total_population | Numeric (Integer) | Total population of the county | Positive integers |
+| median_household_income | Numeric (Float) | Median annual household income (USD) | 16,000 – 180,000+ |
+| poverty_rate | Numeric (Float, 0–1) | Proportion of population below poverty line | 0.01 – 0.63 |
+| unemployment_rate | Numeric (Float, 0–1) | Proportion of labor force unemployed | 0.00 – 0.28 |
+| bachelors_or_higher_pct | Numeric (Float, 0–1) | Proportion of adults with bachelor’s degree or higher | 0.00 – 0.80 |
+| homeownership_rate | Numeric (Float, 0–1) | Proportion of housing units that are owner-occupied | 0.00 – 0.96 |
+| renter_rate | Numeric (Float, 0–1) | Proportion of housing units that are renter-occupied | 0.04 – 1.00 |
+| economic_risk_score | Numeric (Float, 0–1) | Composite risk score calculated from normalized socioeconomic indicators | 0.00 – 1.00 |
+| risk_category | Categorical | Risk group assigned using quantile-based classification | Low Risk, Medium Risk, High Risk |
 
 **Which variable/column will be your target/label in your ML model?**
-- This project does not have any target variable provided in the dataset, the target variable is derived during the analysis.
-- **Complaint root cause** will be the target variable for the modeling.
+- The data does not include an already computed target column. The target was created in our analysis by constructing an economic risk score out of several socioeconomic indicators.
+- The **risk level (Low Risk, Medium Risk, High Risk)** will be considered as the target variable.
   
 **Which variables/columns may be selected as features/predictors for your ML models?**
-- The primary column used will be **Consumer complaint narrative**.
-- **Supporting features:** Product, Sun-Product, Issue, Company and Date received.
+- The ML model characteristics will be chosen among the key socioeconomic variables in the dataset: median household income, poverty rate, unemployment rate, percentage of people with a bachelor degree and higher, and homeownership rate.
+- The reason why these variables are selected is that they directly indicate the economic situation in a county and can be used to explain the reason behind a county becoming low, medium, or high economic risk.
