@@ -22,13 +22,15 @@ It is also important as it converts raw data into something useful and easily co
 
 **What are your research questions?**
 
-1. Which U.S. counties are at the highest risk of economic decline based on key socioeconomic indicators?
+1. Which U.S. counties are at the highest risk of economic decline based on the constructed economic risk score?
 
-2. How do income, poverty, unemployment, education, and homeownership together influence a county's economic risk?
+2. How do key socioeconomic indicators (income, poverty, unemployment, education, and homeownership) influence economic risk?
 
-3. Are there noticeable geographic patterns in economic risk across different states or regions?
+3. What are the distributions and patterns of these socioeconomic indicators across U.S. counties?
 
-4. Can we create a clear and transparent scoring method that combines multiple indicators into one meaningful economic risk score?
+4. Are there geographic patterns in economic risk across different states or regions?
+
+5. Can multiple indicators be combined into a clear and interpretable economic risk score?
 
 ## 3. Data 
 
