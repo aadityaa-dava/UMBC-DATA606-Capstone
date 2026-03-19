@@ -184,7 +184,8 @@ st.sidebar.markdown(
 with st.sidebar.expander("📊 Research Questions", expanded=False):
     st.markdown("""
 - Which U.S. counties are at the highest risk of economic decline?  
-- How do income, poverty, unemployment, education, and homeownership influence economic risk?  
+- How do key socioeconomic indicators (income, poverty, unemployment, education, and homeownership) influence economic risk?
+- What are the distributions and patterns of these socioeconomic indicators across U.S. counties?
 - Are there noticeable patterns in economic risk across counties?  
 - Can multiple indicators be combined into a clear and interpretable economic risk score?
 """)
