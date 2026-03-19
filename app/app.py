@@ -175,22 +175,21 @@ st.sidebar.markdown(
     <h3>📘 Project Details</h3>
     <p><strong>Project Title</strong><br>Identifying U.S. Counties at Risk of Economic Decline</p>
     <p><strong>Author</strong><br>Aadityaa Dava</p>
-    <p><strong>Purpose</strong><br>Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators.</p>
+    <p><strong>Purpose</strong><br>Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators from the American Community Survey (ACS).</p>
 </div>
     """,
     unsafe_allow_html=True
 )
 
-with st.sidebar.expander("Research Questions", expanded=False):
+with st.sidebar.expander("📊 Research Questions", expanded=False):
     st.markdown("""
 - Which U.S. counties are at the highest risk of economic decline?  
-- How do key socioeconomic indicators (income, poverty, unemployment, education, and homeownership) influence economic risk?
-- What are the distributions and patterns of these socioeconomic indicators across U.S. counties?
+- How do income, poverty, unemployment, education, and homeownership influence economic risk?  
 - Are there noticeable patterns in economic risk across counties?  
 - Can multiple indicators be combined into a clear and interpretable economic risk score?
 """)
 
-with st.sidebar.expander("Indicators Used", expanded=False):
+with st.sidebar.expander("📌 Indicators Used", expanded=False):
     st.markdown("""
 - Median Household Income  
 - Poverty Rate  
@@ -199,7 +198,7 @@ with st.sidebar.expander("Indicators Used", expanded=False):
 - Homeownership Rate
 """)
 
-with st.sidebar.expander("Risk Score Methodology", expanded=False):
+with st.sidebar.expander("⚙️ Risk Score Methodology", expanded=False):
     st.markdown("""
 The economic risk score is based on five normalized indicators.
 
@@ -213,7 +212,7 @@ Higher risk is assigned to counties with:
 The final score is the average of these adjusted normalized values.
 """)
 
-with st.sidebar.expander("Data Source", expanded=False):
+with st.sidebar.expander("📂 Data Source", expanded=False):
     st.markdown("""
 U.S. Census Bureau  
 American Community Survey (ACS) 5-Year Estimates
@@ -223,7 +222,7 @@ American Community Survey (ACS) 5-Year Estimates
 # Sidebar: Filters
 # -------------------------------------------------------
 st.sidebar.markdown("---")
-st.sidebar.header("Filters")
+st.sidebar.header("🎛️ Filters")
 
 state_options = ["All"] + sorted(df["state"].unique().tolist())
 selected_state = st.sidebar.selectbox("State", state_options)
@@ -295,13 +294,11 @@ if not filtered_df.empty:
         title="County-Level Economic Risk Across the United States"
     )
 
-    # Better county boundary appearance
     fig_map.update_traces(
         marker_line_color="#ffffff",
         marker_line_width=0.25
     )
 
-    # Better geographic outline appearance
     if selected_state == "All":
         fig_map.update_geos(
             visible=True,
@@ -468,17 +465,16 @@ with col2:
     st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
-# Full Data
+# Filtered Dataset Dropdown / Preview
 # -------------------------------------------------------
 st.markdown('<div class="section-card">', unsafe_allow_html=True)
 
-st.subheader("Filtered Dataset")
-st.markdown(
-    f'<div class="small-note">Shape: {filtered_df.shape}</div>',
-    unsafe_allow_html=True
-)
-
-st.dataframe(filtered_df, use_container_width=True, hide_index=True)
+with st.expander("📂 Preview Filtered Dataset", expanded=False):
+    st.markdown(
+        f'<div class="small-note">Shape: {filtered_df.shape}</div>',
+        unsafe_allow_html=True
+    )
+    st.dataframe(filtered_df, use_container_width=True, hide_index=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -487,7 +483,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 # -------------------------------------------------------
 st.sidebar.markdown("---")
 st.sidebar.download_button(
-    label="Download Filtered Data",
+    label="⬇️ Download Filtered Data",
     data=filtered_df.to_csv(index=False).encode("utf-8"),
     file_name="filtered_county_risk_data.csv",
     mime="text/csv"
