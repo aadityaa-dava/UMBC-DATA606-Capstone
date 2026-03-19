@@ -24,8 +24,72 @@ def load_data():
 df = load_data()
 
 # -------------------------------------------------------
-# Sidebar Filters
+# Sidebar: Project Details
 # -------------------------------------------------------
+st.sidebar.title("Project Details")
+
+st.sidebar.markdown("""
+**Project Title:**  
+Identifying U.S. Counties at Risk of Economic Decline
+
+**Author:**  
+Aadityaa Dava
+
+**Purpose:**  
+This dashboard identifies counties that may be at greater risk of economic decline using publicly available socioeconomic indicators from the American Community Survey (ACS).
+""")
+
+with st.sidebar.expander("Research Questions", expanded=False):
+    st.markdown("""
+- Which U.S. counties are at the highest risk of economic decline?
+- How do income, poverty, unemployment, education, and homeownership influence economic risk?
+- Are there noticeable patterns in economic risk across counties?
+- Can multiple indicators be combined into a clear and interpretable economic risk score?
+""")
+
+with st.sidebar.expander("Indicators Used", expanded=False):
+    st.markdown("""
+- Median Household Income  
+- Poverty Rate  
+- Unemployment Rate  
+- Bachelor's Degree or Higher (%)  
+- Homeownership Rate
+""")
+
+with st.sidebar.expander("Risk Score Methodology", expanded=False):
+    st.markdown("""
+The economic risk score is based on five normalized indicators.
+
+Higher risk is assigned to counties with:
+- lower income
+- higher poverty
+- higher unemployment
+- lower education
+- lower homeownership
+
+The final score is the average of these adjusted normalized values.
+""")
+
+with st.sidebar.expander("Risk Categories", expanded=False):
+    st.markdown("""
+Counties are grouped into:
+- Low Risk
+- Medium Risk
+- High Risk
+
+Categories are assigned using quantile-based binning so that the groups are balanced in size.
+""")
+
+with st.sidebar.expander("Data Source", expanded=False):
+    st.markdown("""
+U.S. Census Bureau  
+American Community Survey (ACS) 5-Year Estimates
+""")
+
+# -------------------------------------------------------
+# Sidebar: Filters
+# -------------------------------------------------------
+st.sidebar.divider()
 st.sidebar.header("Filters")
 
 selected_state = st.sidebar.selectbox(
