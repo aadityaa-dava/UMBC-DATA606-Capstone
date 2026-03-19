@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from pathlib import Path
+import json
+import urllib.request
 
 # -------------------------------------------------------
 # Page Config
@@ -13,14 +15,14 @@ st.set_page_config(
 )
 
 # -------------------------------------------------------
-# Custom CSS Styling - Dark Theme
+# Custom CSS Styling - Light Theme
 # -------------------------------------------------------
 st.markdown(
     """
     <style>
         .stApp {
-            background-color: #0f172a;
-            color: #e2e8f0;
+            background-color: #f7f9fc;
+            color: #1f2937;
         }
 
         .block-container {
@@ -31,101 +33,80 @@ st.markdown(
         }
 
         h1, h2, h3 {
-            color: #f8fafc !important;
-        }
-
-        p, div, label, span {
-            color: #cbd5e1;
+            color: #12344d !important;
         }
 
         .dashboard-title {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #f8fafc;
+            color: #12344d;
             margin-bottom: 0.2rem;
         }
 
         .dashboard-subtitle {
             font-size: 1rem;
-            color: #94a3b8;
+            color: #5b6b7a;
             margin-bottom: 1.5rem;
         }
 
         .section-card {
-            background: #111827;
+            background: white;
             padding: 1.2rem;
             border-radius: 16px;
-            border: 1px solid #1f2937;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
             margin-bottom: 1rem;
         }
 
         [data-testid="stMetric"] {
-            background: #111827;
-            border: 1px solid #1f2937;
+            background: white;
+            border: 1px solid #e5e7eb;
             padding: 16px;
             border-radius: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         [data-testid="stMetricLabel"] {
-            color: #94a3b8 !important;
+            color: #64748b !important;
         }
 
         [data-testid="stMetricValue"] {
-            color: #f8fafc !important;
+            color: #12344d !important;
         }
 
         [data-testid="stSidebar"] {
-            background-color: #111827;
-            border-right: 1px solid #1f2937;
+            background-color: #eef3f8;
+            border-right: 1px solid #dde6ef;
         }
 
         .small-note {
-            color: #94a3b8;
+            color: #64748b;
             font-size: 0.9rem;
         }
 
         .sidebar-card {
-            background-color: #0b1220;
+            background-color: #ffffff;
             padding: 15px;
             border-radius: 12px;
-            border: 1px solid #1f2937;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            border: 1px solid #dde6ef;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             margin-bottom: 15px;
         }
 
         .sidebar-card h3 {
             margin-top: 0;
             margin-bottom: 8px;
-            color: #f8fafc !important;
+            color: #12344d !important;
         }
 
         .sidebar-card p {
-            color: #cbd5e1;
+            color: #334155;
             margin-bottom: 10px;
         }
 
-        .stDataFrame, div[data-testid="stDataFrame"] {
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        div[data-baseweb="select"] > div,
-        div[data-baseweb="input"] > div {
-            background-color: #0b1220 !important;
-            color: #f8fafc !important;
-            border: 1px solid #334155 !important;
-        }
-
-        .stMultiSelect div[data-baseweb="tag"] {
-            background-color: #1e293b !important;
-            color: #f8fafc !important;
-        }
-
         details {
-            background-color: #0b1220;
-            border: 1px solid #1f2937;
+            background-color: #ffffff;
+            border: 1px solid #dde6ef;
             border-radius: 10px;
             padding: 0.35rem 0.6rem;
         }
@@ -160,7 +141,14 @@ def load_data():
         st.stop()
     return pd.read_csv(DATA_PATH)
 
+@st.cache_data
+def load_geojson():
+    url = "https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json"
+    with urllib.request.urlopen(url) as response:
+        return json.load(response)
+
 df = load_data()
+counties_geojson = load_geojson()
 
 # -------------------------------------------------------
 # Clean Data
@@ -169,6 +157,7 @@ df = df.dropna(subset=["risk_category"]).copy()
 df["state"] = df["state"].astype(str)
 df["county"] = df["county"].astype(str)
 df["risk_category"] = df["risk_category"].astype(str)
+df["county_fips"] = df["county_fips"].astype(str).str.zfill(5)
 
 # -------------------------------------------------------
 # Sidebar: Project Details
@@ -269,6 +258,60 @@ col3.metric("High Risk Counties", int(high_risk))
 st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
+# U.S. County Risk Map
+# -------------------------------------------------------
+st.markdown('<div class="section-card">', unsafe_allow_html=True)
+st.subheader("U.S. County Economic Risk Map")
+
+if not filtered_df.empty:
+    fig_map = px.choropleth(
+        filtered_df,
+        geojson=counties_geojson,
+        locations="county_fips",
+        featureidkey="id",
+        color="risk_category",
+        scope="usa",
+        hover_name="county",
+        hover_data={
+            "state": True,
+            "economic_risk_score": ":.3f",
+            "median_household_income": ":,.0f",
+            "poverty_rate": ":.2%",
+            "unemployment_rate": ":.2%",
+            "bachelors_or_higher_pct": ":.2%",
+            "homeownership_rate": ":.2%",
+            "county_fips": False,
+            "risk_category": True
+        },
+        color_discrete_map={
+            "Low Risk": "green",
+            "Medium Risk": "orange",
+            "High Risk": "red"
+        },
+        category_orders={"risk_category": ["Low Risk", "Medium Risk", "High Risk"]},
+        title="County-Level Economic Risk Across the United States"
+    )
+
+    fig_map.update_geos(
+        fitbounds="locations",
+        visible=False
+    )
+
+    fig_map.update_layout(
+        height=650,
+        margin=dict(l=0, r=0, t=50, b=0),
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+        legend_title_text="Risk Category"
+    )
+
+    st.plotly_chart(fig_map, use_container_width=True)
+else:
+    st.warning("No counties match the selected filters.")
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+# -------------------------------------------------------
 # Charts
 # -------------------------------------------------------
 col1, col2 = st.columns(2)
@@ -292,15 +335,14 @@ with col1:
                 "Medium Risk": "orange",
                 "High Risk": "red"
             },
-            category_orders={"Risk": ["Low Risk", "Medium Risk", "High Risk"]},
-            template="plotly_dark"
+            category_orders={"Risk": ["Low Risk", "Medium Risk", "High Risk"]}
         )
         fig.update_layout(
             height=420,
             margin=dict(l=20, r=20, t=20, b=20),
-            paper_bgcolor="#111827",
-            plot_bgcolor="#111827",
-            font=dict(color="#e2e8f0")
+            paper_bgcolor="white",
+            plot_bgcolor="white",
+            font=dict(color="#12344d")
         )
         st.plotly_chart(fig, use_container_width=True)
     else:
@@ -315,15 +357,14 @@ with col2:
         fig = px.histogram(
             filtered_df,
             x="economic_risk_score",
-            nbins=40,
-            template="plotly_dark"
+            nbins=40
         )
         fig.update_layout(
             height=420,
             margin=dict(l=20, r=20, t=20, b=20),
-            paper_bgcolor="#111827",
-            plot_bgcolor="#111827",
-            font=dict(color="#e2e8f0")
+            paper_bgcolor="white",
+            plot_bgcolor="white",
+            font=dict(color="#12344d")
         )
         st.plotly_chart(fig, use_container_width=True)
     else:
@@ -379,3 +420,14 @@ st.markdown(
 st.dataframe(filtered_df, use_container_width=True, hide_index=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
+# -------------------------------------------------------
+# Sidebar: Download Filtered Data
+# -------------------------------------------------------
+st.sidebar.markdown("---")
+st.sidebar.download_button(
+    label="⬇️ Download Filtered Data",
+    data=filtered_df.to_csv(index=False).encode("utf-8"),
+    file_name="filtered_county_risk_data.csv",
+    mime="text/csv"
+)
