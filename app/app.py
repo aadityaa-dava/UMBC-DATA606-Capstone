@@ -175,7 +175,7 @@ st.sidebar.markdown(
     <h3>Project Details</h3>
     <p><strong>Project Title</strong><br>Identifying U.S. Counties at Risk of Economic Decline</p>
     <p><strong>Author</strong><br>Aadityaa Dava</p>
-    <p><strong>Purpose</strong><br>Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators from the American Community Survey (ACS).</p>
+    <p><strong>Purpose</strong><br>Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators.</p>
 </div>
     """,
     unsafe_allow_html=True
