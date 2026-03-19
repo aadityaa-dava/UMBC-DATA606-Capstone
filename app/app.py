@@ -1,15 +1,25 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from pathlib import Path
 
 st.set_page_config(page_title="County Economic Risk Dashboard", layout="wide")
 
 st.title("U.S. County Economic Risk Dashboard")
 st.caption("Built from ACS 5-year county-level indicators and a transparent composite risk score.")
 
+# -------------------------------------------------------
+# Load Data
+# -------------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent
+DATA_PATH = BASE_DIR.parent / "data" / "county_risk_app_ready.csv"
+
 @st.cache_data
 def load_data():
-    return pd.read_csv("county_risk_app_ready.csv")
+    if not DATA_PATH.exists():
+        st.error(f"Data file not found at: {DATA_PATH}")
+        st.stop()
+    return pd.read_csv(DATA_PATH)
 
 df = load_data()
 
