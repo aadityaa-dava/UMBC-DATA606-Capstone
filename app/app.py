@@ -86,22 +86,29 @@ st.markdown(
 
         .sidebar-card {
             background-color: #ffffff;
-            padding: 15px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 14px;
             border: 1px solid #dde6ef;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             margin-bottom: 15px;
         }
 
         .sidebar-card h3 {
-            margin-top: 0;
-            margin-bottom: 8px;
+            margin: 0 0 10px 0;
             color: #12344d !important;
+            font-size: 1.55rem;
+            font-weight: 700;
         }
 
         .sidebar-card p {
             color: #334155;
-            margin-bottom: 10px;
+            margin: 0 0 12px 0;
+            line-height: 1.5;
+            font-size: 0.98rem;
+        }
+
+        .sidebar-card strong {
+            color: #12344d;
         }
 
         details {
@@ -164,17 +171,12 @@ df["county_fips"] = df["county_fips"].astype(str).str.zfill(5)
 # -------------------------------------------------------
 st.sidebar.markdown(
     """
-    <div class="sidebar-card">
-        <h3>📘 Project Details</h3>
-        <p><b>Project Title</b><br>
-        Identifying U.S. Counties at Risk of Economic Decline</p>
-
-        <p><b>Author</b><br>
-        Aadityaa Dava</p>
-
-        <p><b>Purpose</b><br>
-        Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators from the American Community Survey (ACS).</p>
-    </div>
+<div class="sidebar-card">
+    <h3>📘 Project Details</h3>
+    <p><strong>Project Title</strong><br>Identifying U.S. Counties at Risk of Economic Decline</p>
+    <p><strong>Author</strong><br>Aadityaa Dava</p>
+    <p><strong>Purpose</strong><br>Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators from the American Community Survey (ACS).</p>
+</div>
     """,
     unsafe_allow_html=True
 )
@@ -292,10 +294,13 @@ if not filtered_df.empty:
         title="County-Level Economic Risk Across the United States"
     )
 
-    fig_map.update_geos(
-        fitbounds="locations",
-        visible=False
-    )
+    # Important fix:
+    # For all counties, do NOT use fitbounds.
+    # For a single state, zoom in using fitbounds.
+    if selected_state == "All":
+        fig_map.update_geos(visible=False)
+    else:
+        fig_map.update_geos(fitbounds="locations", visible=False)
 
     fig_map.update_layout(
         height=650,
