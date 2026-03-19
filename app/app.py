@@ -13,13 +13,14 @@ st.set_page_config(
 )
 
 # -------------------------------------------------------
-# Custom CSS Styling
+# Custom CSS Styling - Dark Theme
 # -------------------------------------------------------
 st.markdown(
     """
     <style>
-        .main {
-            background-color: #f7f9fc;
+        .stApp {
+            background-color: #0f172a;
+            color: #e2e8f0;
         }
 
         .block-container {
@@ -30,45 +31,103 @@ st.markdown(
         }
 
         h1, h2, h3 {
-            color: #1f2d3d;
+            color: #f8fafc !important;
+        }
+
+        p, div, label, span {
+            color: #cbd5e1;
         }
 
         .dashboard-title {
-            font-size: 2.4rem;
-            font-weight: 700;
-            color: #12344d;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #f8fafc;
             margin-bottom: 0.2rem;
         }
 
         .dashboard-subtitle {
             font-size: 1rem;
-            color: #5b6b7a;
+            color: #94a3b8;
             margin-bottom: 1.5rem;
         }
 
         .section-card {
-            background: white;
+            background: #111827;
             padding: 1.2rem;
-            border-radius: 14px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            border-radius: 16px;
+            border: 1px solid #1f2937;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
             margin-bottom: 1rem;
         }
 
         [data-testid="stMetric"] {
-            background: white;
-            border: 1px solid #e6ecf2;
+            background: #111827;
+            border: 1px solid #1f2937;
             padding: 16px;
             border-radius: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+        }
+
+        [data-testid="stMetricLabel"] {
+            color: #94a3b8 !important;
+        }
+
+        [data-testid="stMetricValue"] {
+            color: #f8fafc !important;
         }
 
         [data-testid="stSidebar"] {
-            background-color: #eef3f8;
+            background-color: #111827;
+            border-right: 1px solid #1f2937;
         }
 
         .small-note {
-            color: #6b7c93;
+            color: #94a3b8;
             font-size: 0.9rem;
+        }
+
+        .sidebar-card {
+            background-color: #0b1220;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #1f2937;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+        }
+
+        .sidebar-card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #f8fafc !important;
+        }
+
+        .sidebar-card p {
+            color: #cbd5e1;
+            margin-bottom: 10px;
+        }
+
+        .stDataFrame, div[data-testid="stDataFrame"] {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        div[data-baseweb="select"] > div,
+        div[data-baseweb="input"] > div {
+            background-color: #0b1220 !important;
+            color: #f8fafc !important;
+            border: 1px solid #334155 !important;
+        }
+
+        .stMultiSelect div[data-baseweb="tag"] {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+        }
+
+        details {
+            background-color: #0b1220;
+            border: 1px solid #1f2937;
+            border-radius: 10px;
+            padding: 0.35rem 0.6rem;
         }
     </style>
     """,
@@ -103,45 +162,81 @@ def load_data():
 
 df = load_data()
 
-# Keep displayed/filter fields consistent
+# -------------------------------------------------------
+# Clean Data
+# -------------------------------------------------------
+df = df.dropna(subset=["risk_category"]).copy()
 df["state"] = df["state"].astype(str)
 df["county"] = df["county"].astype(str)
 df["risk_category"] = df["risk_category"].astype(str)
 
 # -------------------------------------------------------
-# Sidebar: Project Info
+# Sidebar: Project Details
 # -------------------------------------------------------
-st.sidebar.title("📘 Project Details")
+st.sidebar.markdown(
+    """
+    <div class="sidebar-card">
+        <h3>📘 Project Details</h3>
+        <p><b>Project Title</b><br>
+        Identifying U.S. Counties at Risk of Economic Decline</p>
 
-st.sidebar.markdown("""
-**Project Title:**  
-Identifying U.S. Counties at Risk of Economic Decline  
+        <p><b>Author</b><br>
+        Aadityaa Dava</p>
 
-**Author:**  
-Aadityaa Dava  
+        <p><b>Purpose</b><br>
+        Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators from the American Community Survey (ACS).</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-**Purpose:**  
-Identify counties vulnerable to economic decline using ACS indicators.
+with st.sidebar.expander("📊 Research Questions", expanded=False):
+    st.markdown("""
+- Which U.S. counties are at the highest risk of economic decline?  
+- How do income, poverty, unemployment, education, and homeownership influence economic risk?  
+- Are there noticeable patterns in economic risk across counties?  
+- Can multiple indicators be combined into a clear and interpretable economic risk score?
 """)
 
-with st.sidebar.expander("Methodology"):
+with st.sidebar.expander("📌 Indicators Used", expanded=False):
     st.markdown("""
-- Data from ACS 5-Year Estimates  
-- Features normalized using Min-Max scaling  
-- Risk score built from five indicators  
-- Counties grouped into Low, Medium, and High Risk using quantiles
+- Median Household Income  
+- Poverty Rate  
+- Unemployment Rate  
+- Bachelor's Degree or Higher (%)  
+- Homeownership Rate
+""")
+
+with st.sidebar.expander("⚙️ Risk Score Methodology", expanded=False):
+    st.markdown("""
+The economic risk score is based on five normalized indicators.
+
+Higher risk is assigned to counties with:
+- lower income  
+- higher poverty  
+- higher unemployment  
+- lower education  
+- lower homeownership  
+
+The final score is the average of these adjusted normalized values.
+""")
+
+with st.sidebar.expander("📂 Data Source", expanded=False):
+    st.markdown("""
+U.S. Census Bureau  
+American Community Survey (ACS) 5-Year Estimates
 """)
 
 # -------------------------------------------------------
 # Sidebar: Filters
 # -------------------------------------------------------
 st.sidebar.markdown("---")
-st.sidebar.header("Filters")
+st.sidebar.header("🎛️ Filters")
 
-state_options = ["All"] + sorted(df["state"].dropna().astype(str).unique().tolist())
+state_options = ["All"] + sorted(df["state"].unique().tolist())
 selected_state = st.sidebar.selectbox("State", state_options)
 
-risk_options = sorted(df["risk_category"].dropna().astype(str).unique().tolist())
+risk_options = ["Low Risk", "Medium Risk", "High Risk"]
 selected_risk = st.sidebar.multiselect(
     "Risk Category",
     options=risk_options,
@@ -151,21 +246,22 @@ selected_risk = st.sidebar.multiselect(
 filtered_df = df.copy()
 
 if selected_state != "All":
-    filtered_df = filtered_df[filtered_df["state"].astype(str) == selected_state]
+    filtered_df = filtered_df[filtered_df["state"] == selected_state]
 
-filtered_df = filtered_df[filtered_df["risk_category"].astype(str).isin(selected_risk)]
+filtered_df = filtered_df[filtered_df["risk_category"].isin(selected_risk)]
 
 # -------------------------------------------------------
-# Metrics
+# Summary Metrics
 # -------------------------------------------------------
 st.markdown('<div class="section-card">', unsafe_allow_html=True)
 
+st.subheader("Summary Metrics")
 col1, col2, col3 = st.columns(3)
 
 col1.metric("Total Counties", len(filtered_df))
 
 avg_risk = filtered_df["economic_risk_score"].mean() if not filtered_df.empty else 0
-col2.metric("Avg Risk Score", f"{avg_risk:.3f}")
+col2.metric("Average Risk Score", f"{avg_risk:.3f}")
 
 high_risk = (filtered_df["risk_category"] == "High Risk").sum() if not filtered_df.empty else 0
 col3.metric("High Risk Counties", int(high_risk))
@@ -196,9 +292,16 @@ with col1:
                 "Medium Risk": "orange",
                 "High Risk": "red"
             },
-            category_orders={"Risk": ["Low Risk", "Medium Risk", "High Risk"]}
+            category_orders={"Risk": ["Low Risk", "Medium Risk", "High Risk"]},
+            template="plotly_dark"
         )
-        fig.update_layout(height=420, margin=dict(l=20, r=20, t=20, b=20))
+        fig.update_layout(
+            height=420,
+            margin=dict(l=20, r=20, t=20, b=20),
+            paper_bgcolor="#111827",
+            plot_bgcolor="#111827",
+            font=dict(color="#e2e8f0")
+        )
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.warning("No data available for the selected filters.")
@@ -212,9 +315,16 @@ with col2:
         fig = px.histogram(
             filtered_df,
             x="economic_risk_score",
-            nbins=40
+            nbins=40,
+            template="plotly_dark"
         )
-        fig.update_layout(height=420, margin=dict(l=20, r=20, t=20, b=20))
+        fig.update_layout(
+            height=420,
+            margin=dict(l=20, r=20, t=20, b=20),
+            paper_bgcolor="#111827",
+            plot_bgcolor="#111827",
+            font=dict(color="#e2e8f0")
+        )
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.warning("No data available for the selected filters.")
@@ -258,3 +368,14 @@ with col2:
 # -------------------------------------------------------
 # Full Data
 # -------------------------------------------------------
+st.markdown('<div class="section-card">', unsafe_allow_html=True)
+
+st.subheader("Filtered Dataset")
+st.markdown(
+    f'<div class="small-note">Shape: {filtered_df.shape}</div>',
+    unsafe_allow_html=True
+)
+
+st.dataframe(filtered_df, use_container_width=True, hide_index=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
