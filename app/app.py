@@ -227,11 +227,10 @@ st.sidebar.header("🎛️ Filters")
 state_options = ["All"] + sorted(df["state"].unique().tolist())
 selected_state = st.sidebar.selectbox("State", state_options)
 
-risk_options = ["Low Risk", "Medium Risk", "High Risk"]
-selected_risk = st.sidebar.multiselect(
+selected_risk = st.sidebar.selectbox(
     "Risk Category",
-    options=risk_options,
-    default=risk_options
+    ["All", "Low Risk", "Medium Risk", "High Risk"],
+    index=0
 )
 
 filtered_df = df.copy()
@@ -239,7 +238,8 @@ filtered_df = df.copy()
 if selected_state != "All":
     filtered_df = filtered_df[filtered_df["state"] == selected_state]
 
-filtered_df = filtered_df[filtered_df["risk_category"].isin(selected_risk)]
+if selected_risk != "All":
+    filtered_df = filtered_df[filtered_df["risk_category"] == selected_risk]
 
 # -------------------------------------------------------
 # Summary Metrics
@@ -294,13 +294,41 @@ if not filtered_df.empty:
         title="County-Level Economic Risk Across the United States"
     )
 
-    # Important fix:
-    # For all counties, do NOT use fitbounds.
-    # For a single state, zoom in using fitbounds.
+    # Better county boundary appearance
+    fig_map.update_traces(
+        marker_line_color="#ffffff",
+        marker_line_width=0.25
+    )
+
+    # Better geographic outline appearance
     if selected_state == "All":
-        fig_map.update_geos(visible=False)
+        fig_map.update_geos(
+            visible=True,
+            showland=True,
+            landcolor="#f8fafc",
+            bgcolor="white",
+            showcountries=False,
+            showcoastlines=False,
+            showsubunits=True,
+            subunitcolor="#94a3b8",
+            subunitwidth=0.6,
+            showlakes=False,
+            fitbounds=False
+        )
     else:
-        fig_map.update_geos(fitbounds="locations", visible=False)
+        fig_map.update_geos(
+            visible=True,
+            fitbounds="locations",
+            showland=True,
+            landcolor="#f8fafc",
+            bgcolor="white",
+            showcountries=False,
+            showcoastlines=False,
+            showsubunits=True,
+            subunitcolor="#94a3b8",
+            subunitwidth=0.7,
+            showlakes=False
+        )
 
     fig_map.update_layout(
         height=650,
@@ -318,43 +346,68 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
 # Charts
+# Show risk category distribution only when a specific state is selected
 # -------------------------------------------------------
-col1, col2 = st.columns(2)
+if selected_state != "All":
+    col1, col2 = st.columns(2)
 
-with col1:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.subheader("Risk Category Distribution")
+    with col1:
+        st.markdown('<div class="section-card">', unsafe_allow_html=True)
+        st.subheader("Risk Category Distribution")
 
-    if not filtered_df.empty:
-        counts = filtered_df["risk_category"].value_counts().reset_index()
-        counts.columns = ["Risk", "Count"]
+        if not filtered_df.empty:
+            counts = filtered_df["risk_category"].value_counts().reset_index()
+            counts.columns = ["Risk", "Count"]
 
-        fig = px.bar(
-            counts,
-            x="Risk",
-            y="Count",
-            color="Risk",
-            text="Count",
-            color_discrete_map={
-                "Low Risk": "green",
-                "Medium Risk": "orange",
-                "High Risk": "red"
-            },
-            category_orders={"Risk": ["Low Risk", "Medium Risk", "High Risk"]}
-        )
-        fig.update_layout(
-            height=420,
-            margin=dict(l=20, r=20, t=20, b=20),
-            paper_bgcolor="white",
-            plot_bgcolor="white",
-            font=dict(color="#12344d")
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning("No data available for the selected filters.")
-    st.markdown('</div>', unsafe_allow_html=True)
+            fig = px.bar(
+                counts,
+                x="Risk",
+                y="Count",
+                color="Risk",
+                text="Count",
+                color_discrete_map={
+                    "Low Risk": "green",
+                    "Medium Risk": "orange",
+                    "High Risk": "red"
+                },
+                category_orders={"Risk": ["Low Risk", "Medium Risk", "High Risk"]}
+            )
+            fig.update_layout(
+                height=420,
+                margin=dict(l=20, r=20, t=20, b=20),
+                paper_bgcolor="white",
+                plot_bgcolor="white",
+                font=dict(color="#12344d")
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.warning("No data available for the selected filters.")
+        st.markdown('</div>', unsafe_allow_html=True)
 
-with col2:
+    with col2:
+        st.markdown('<div class="section-card">', unsafe_allow_html=True)
+        st.subheader("Risk Score Distribution")
+
+        if not filtered_df.empty:
+            fig = px.histogram(
+                filtered_df,
+                x="economic_risk_score",
+                nbins=40,
+                color_discrete_sequence=["#12344d"]
+            )
+            fig.update_layout(
+                height=420,
+                margin=dict(l=20, r=20, t=20, b=20),
+                paper_bgcolor="white",
+                plot_bgcolor="white",
+                font=dict(color="#12344d")
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.warning("No data available for the selected filters.")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+else:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Risk Score Distribution")
 
@@ -362,7 +415,8 @@ with col2:
         fig = px.histogram(
             filtered_df,
             x="economic_risk_score",
-            nbins=40
+            nbins=40,
+            color_discrete_sequence=["#12344d"]
         )
         fig.update_layout(
             height=420,
@@ -374,6 +428,7 @@ with col2:
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.warning("No data available for the selected filters.")
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
