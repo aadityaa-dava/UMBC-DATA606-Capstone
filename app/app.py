@@ -10,7 +10,7 @@ import urllib.request
 # -------------------------------------------------------
 st.set_page_config(
     page_title="County Economic Risk Dashboard",
-    page_icon="📊",
+    page_icon="🇺🇸",
     layout="wide"
 )
 
