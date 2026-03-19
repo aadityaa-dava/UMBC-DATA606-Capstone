@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 # -------------------------------------------------------
-# Custom CSS Styling (FIXED)
+# Custom CSS Styling
 # -------------------------------------------------------
 st.markdown(
     """
@@ -89,7 +89,7 @@ st.markdown(
 )
 
 # -------------------------------------------------------
-# Load Data (FIXED PATH)
+# Load Data
 # -------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR.parent / "data" / "county_risk_app_ready.csv"
@@ -102,6 +102,11 @@ def load_data():
     return pd.read_csv(DATA_PATH)
 
 df = load_data()
+
+# Keep displayed/filter fields consistent
+df["state"] = df["state"].astype(str)
+df["county"] = df["county"].astype(str)
+df["risk_category"] = df["risk_category"].astype(str)
 
 # -------------------------------------------------------
 # Sidebar: Project Info
@@ -123,8 +128,8 @@ with st.sidebar.expander("Methodology"):
     st.markdown("""
 - Data from ACS 5-Year Estimates  
 - Features normalized using Min-Max scaling  
-- Risk score combines 5 indicators  
-- Quantile-based classification  
+- Risk score built from five indicators  
+- Counties grouped into Low, Medium, and High Risk using quantiles
 """)
 
 # -------------------------------------------------------
@@ -133,23 +138,22 @@ with st.sidebar.expander("Methodology"):
 st.sidebar.markdown("---")
 st.sidebar.header("Filters")
 
-selected_state = st.sidebar.selectbox(
-    "State",
-    ["All"] + sorted(df["state"].dropna().unique())
-)
+state_options = ["All"] + sorted(df["state"].dropna().astype(str).unique().tolist())
+selected_state = st.sidebar.selectbox("State", state_options)
 
+risk_options = sorted(df["risk_category"].dropna().astype(str).unique().tolist())
 selected_risk = st.sidebar.multiselect(
     "Risk Category",
-    sorted(df["risk_category"].unique()),
-    default=sorted(df["risk_category"].unique())
+    options=risk_options,
+    default=risk_options
 )
 
 filtered_df = df.copy()
 
 if selected_state != "All":
-    filtered_df = filtered_df[filtered_df["state"] == selected_state]
+    filtered_df = filtered_df[filtered_df["state"].astype(str) == selected_state]
 
-filtered_df = filtered_df[filtered_df["risk_category"].isin(selected_risk)]
+filtered_df = filtered_df[filtered_df["risk_category"].astype(str).isin(selected_risk)]
 
 # -------------------------------------------------------
 # Metrics
@@ -163,7 +167,7 @@ col1.metric("Total Counties", len(filtered_df))
 avg_risk = filtered_df["economic_risk_score"].mean() if not filtered_df.empty else 0
 col2.metric("Avg Risk Score", f"{avg_risk:.3f}")
 
-high_risk = (filtered_df["risk_category"] == "High Risk").sum()
+high_risk = (filtered_df["risk_category"] == "High Risk").sum() if not filtered_df.empty else 0
 col3.metric("High Risk Counties", int(high_risk))
 
 st.markdown('</div>', unsafe_allow_html=True)
@@ -186,13 +190,18 @@ with col1:
             x="Risk",
             y="Count",
             color="Risk",
+            text="Count",
             color_discrete_map={
                 "Low Risk": "green",
                 "Medium Risk": "orange",
                 "High Risk": "red"
-            }
+            },
+            category_orders={"Risk": ["Low Risk", "Medium Risk", "High Risk"]}
         )
+        fig.update_layout(height=420, margin=dict(l=20, r=20, t=20, b=20))
         st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.warning("No data available for the selected filters.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col2:
@@ -200,8 +209,15 @@ with col2:
     st.subheader("Risk Score Distribution")
 
     if not filtered_df.empty:
-        fig = px.histogram(filtered_df, x="economic_risk_score", nbins=40)
+        fig = px.histogram(
+            filtered_df,
+            x="economic_risk_score",
+            nbins=40
+        )
+        fig.update_layout(height=420, margin=dict(l=20, r=20, t=20, b=20))
         st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.warning("No data available for the selected filters.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
@@ -213,26 +229,32 @@ with col1:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Top High-Risk Counties")
 
-    high = filtered_df.sort_values("economic_risk_score", ascending=False).head(10)
-    st.dataframe(high[["state", "county", "economic_risk_score"]], hide_index=True)
+    if not filtered_df.empty:
+        high = filtered_df.sort_values("economic_risk_score", ascending=False).head(10)
+        st.dataframe(
+            high[["state", "county", "economic_risk_score", "risk_category"]],
+            use_container_width=True,
+            hide_index=True
+        )
+    else:
+        st.info("No counties to display.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col2:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Top Low-Risk Counties")
 
-    low = filtered_df.sort_values("economic_risk_score").head(10)
-    st.dataframe(low[["state", "county", "economic_risk_score"]], hide_index=True)
+    if not filtered_df.empty:
+        low = filtered_df.sort_values("economic_risk_score", ascending=True).head(10)
+        st.dataframe(
+            low[["state", "county", "economic_risk_score", "risk_category"]],
+            use_container_width=True,
+            hide_index=True
+        )
+    else:
+        st.info("No counties to display.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
 # Full Data
 # -------------------------------------------------------
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
-
-st.subheader("Filtered Dataset")
-st.markdown(f'<div class="small-note">Shape: {filtered_df.shape}</div>', unsafe_allow_html=True)
-
-st.dataframe(filtered_df, use_container_width=True, hide_index=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
