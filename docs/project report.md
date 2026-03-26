@@ -4,8 +4,8 @@
 
 - **Project Title**: Identifying U.S. Counties at Risk of Economic Decline Using Public Socioeconomic Indicators  
 - **Author**: Aadityaa Dava  
-- **Semester**: Spring 2026  
-- **Program**: UMBC Data Science Master's Degree Capstone  
+- **Semester**: Spring'26  
+- **Program**: Masters in Data Science
 - **Instructor**: Dr. Chaojie (Jay) Wang  
 
 - **GitHub Repository**:  
