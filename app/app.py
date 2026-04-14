@@ -11,7 +11,7 @@ import streamlit as st
 # -------------------------------------------------------
 st.set_page_config(
     page_title="County Economic Risk Dashboard",
-    page_icon="📊",
+    page_icon="📉",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -46,7 +46,7 @@ st.markdown(
         }
 
         .block-container {
-            padding-top: 3.7rem;
+            padding-top: 3.2rem;
             padding-bottom: 2rem;
             padding-left: 2rem;
             padding-right: 2rem;
@@ -54,12 +54,12 @@ st.markdown(
         }
 
         .hero {
-            padding: 1.6rem 1.8rem;
+            padding: 1.8rem 2rem;
             border-radius: 24px;
             background: linear-gradient(135deg, #12344d 0%, #1d4f73 60%, #3b82f6 100%);
             color: white;
             box-shadow: 0 12px 30px rgba(18, 52, 77, 0.18);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.15);
         }
@@ -72,27 +72,17 @@ st.markdown(
         }
 
         .hero p {
-            margin: 0.45rem 0 0 0;
+            margin: 0.6rem 0 0 0;
             font-size: 1rem;
             color: rgba(255,255,255,0.92);
             line-height: 1.6;
-        }
-
-        .section-card {
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(8px);
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 1.1rem 1.15rem;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-            margin-bottom: 1rem;
         }
 
         .mini-note {
             color: #64748b;
             font-size: 0.92rem;
             margin-top: -0.2rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
         }
 
         [data-testid="stMetric"] {
@@ -176,15 +166,18 @@ def load_geojson() -> dict:
 
 
 def apply_plot_layout(fig, height=420, title=None):
-    fig.update_layout(
+    layout_kwargs = dict(
         height=height,
         margin=dict(l=20, r=20, t=50 if title else 20, b=20),
         paper_bgcolor=PAPER_BG,
         plot_bgcolor=PLOT_BG,
         font=dict(color=TEXT_COLOR),
         legend_title_text="",
-        title=title,
     )
+    if title is not None:
+        layout_kwargs["title"] = title
+
+    fig.update_layout(**layout_kwargs)
     return fig
 
 
@@ -230,8 +223,8 @@ with st.sidebar.expander("Research Questions", expanded=False):
     st.markdown("""
 - Which U.S. counties are at the highest risk of economic decline?
 - How do key socioeconomic indicators influence economic risk?
-- What are the distributions and patterns of these indicators across counties?
 - Are there geographic patterns in economic risk across states or regions?
+- Can multiple indicators be combined into a clear and interpretable economic risk score?
 """)
 
 with st.sidebar.expander("Indicators Used", expanded=False):
@@ -269,7 +262,7 @@ selected_state = st.sidebar.selectbox("State", state_options)
 
 selected_risk = st.sidebar.selectbox(
     "Risk Category",
-    ["All"] + RISK_ORDER
+    ["All"] + RISK_ORDER,
 )
 
 filtered_df = df.copy()
@@ -304,7 +297,6 @@ st.markdown("<br>", unsafe_allow_html=True)
 # -------------------------------------------------------
 # Risk Map
 # -------------------------------------------------------
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
 st.subheader("County Economic Risk Map")
 st.markdown(
     '<div class="mini-note">Explore how risk levels vary geographically across counties.</div>',
@@ -366,7 +358,7 @@ else:
 
     st.plotly_chart(fig_map, use_container_width=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # -------------------------------------------------------
 # Charts
@@ -374,7 +366,6 @@ st.markdown('</div>', unsafe_allow_html=True)
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Risk Score Distribution")
 
     if filtered_df.empty:
@@ -389,10 +380,7 @@ with col1:
         apply_plot_layout(fig_hist, height=420)
         st.plotly_chart(fig_hist, use_container_width=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
 with col2:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Risk Category Breakdown")
 
     if filtered_df.empty:
@@ -419,7 +407,7 @@ with col2:
         fig_bar.update_traces(textposition="outside")
         st.plotly_chart(fig_bar, use_container_width=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # -------------------------------------------------------
 # Tables
@@ -427,7 +415,6 @@ with col2:
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Top High-Risk Counties")
 
     if filtered_df.empty:
@@ -440,10 +427,7 @@ with col1:
             hide_index=True,
         )
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
 with col2:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Top Low-Risk Counties")
 
     if filtered_df.empty:
@@ -455,8 +439,6 @@ with col2:
             use_container_width=True,
             hide_index=True,
         )
-
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
 # Dataset Preview
