@@ -155,6 +155,9 @@ st.markdown(
             line-height: 1.45;
             font-size: 0.96rem;
         }
+        .block-container {
+            padding-top: 2.2rem;  /* increase from 1.5rem */
+        }
 
         h2, h3 {
             color: #12344d !important;
