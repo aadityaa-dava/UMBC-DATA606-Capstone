@@ -156,7 +156,7 @@ st.markdown(
             font-size: 0.96rem;
         }
         .block-container {
-            padding-top: 3.5rem;  /* increase from 1.5rem */
+            padding-top: 3.7rem;  /* increase from 1.5rem */
         }
 
         h2, h3 {
