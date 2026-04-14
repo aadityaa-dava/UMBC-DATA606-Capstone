@@ -46,7 +46,7 @@ st.markdown(
         }
 
         .block-container {
-            padding-top: 1.5rem;
+            padding-top: 3.7rem;
             padding-bottom: 2rem;
             padding-left: 2rem;
             padding-right: 2rem;
@@ -55,11 +55,11 @@ st.markdown(
 
         .hero {
             padding: 1.6rem 1.8rem;
-            border-radius: 24px;  /* increase slightly for smoother look */
+            border-radius: 24px;
             background: linear-gradient(135deg, #12344d 0%, #1d4f73 60%, #3b82f6 100%);
             color: white;
             box-shadow: 0 12px 30px rgba(18, 52, 77, 0.18);
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.15);
         }
@@ -75,23 +75,7 @@ st.markdown(
             margin: 0.45rem 0 0 0;
             font-size: 1rem;
             color: rgba(255,255,255,0.92);
-        }
-
-        .badge-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 0.75rem;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.45rem 0.75rem;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.18);
-            color: white;
-            font-size: 0.88rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            line-height: 1.6;
         }
 
         .section-card {
@@ -155,9 +139,6 @@ st.markdown(
             line-height: 1.45;
             font-size: 0.96rem;
         }
-        .block-container {
-            padding-top: 3.7rem;  /* increase from 1.5rem */
-        }
 
         h2, h3 {
             color: #12344d !important;
@@ -179,9 +160,12 @@ def load_data(path: Path) -> pd.DataFrame:
     df_ = df_.dropna(subset=["risk_category"]).copy()
     df_["state"] = df_["state"].astype(str)
     df_["county"] = df_["county"].astype(str)
-    df_["risk_category"] = pd.Categorical(df_["risk_category"], categories=RISK_ORDER, ordered=True)
+    df_["risk_category"] = pd.Categorical(
+        df_["risk_category"],
+        categories=RISK_ORDER,
+        ordered=True,
+    )
     df_["county_fips"] = df_["county_fips"].astype(str).str.zfill(5)
-
     return df_
 
 
@@ -246,6 +230,7 @@ with st.sidebar.expander("Research Questions", expanded=False):
     st.markdown("""
 - Which U.S. counties are at the highest risk of economic decline?
 - How do key socioeconomic indicators influence economic risk?
+- What are the distributions and patterns of these indicators across counties?
 - Are there geographic patterns in economic risk across states or regions?
 - Can multiple indicators be combined into a clear and interpretable economic risk score?
 """)
@@ -299,9 +284,11 @@ if selected_risk != "All":
 # -------------------------------------------------------
 # Summary Metrics
 # -------------------------------------------------------
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
 st.subheader("Summary Metrics")
-st.markdown('<div class="mini-note">A quick overview of the currently filtered counties.</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="mini-note">A quick overview of the currently filtered counties.</div>',
+    unsafe_allow_html=True,
+)
 
 col1, col2, col3 = st.columns(3)
 
@@ -313,7 +300,7 @@ col1.metric("Total Counties", f"{total_counties:,}")
 col2.metric("Average Risk Score", f"{avg_risk:.3f}")
 col3.metric("High Risk Counties", f"{high_risk_count:,}")
 
-st.markdown('</div>', unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # -------------------------------------------------------
 # Risk Map
@@ -475,16 +462,12 @@ with col2:
 # -------------------------------------------------------
 # Dataset Preview
 # -------------------------------------------------------
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
-
 with st.expander("Preview Filtered Dataset", expanded=False):
     st.markdown(
         f'<div class="mini-note">Current shape: {filtered_df.shape[0]:,} rows × {filtered_df.shape[1]} columns</div>',
         unsafe_allow_html=True,
     )
     st.dataframe(filtered_df, use_container_width=True, hide_index=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
 # Download Button
