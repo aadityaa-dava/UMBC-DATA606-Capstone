@@ -232,7 +232,6 @@ with st.sidebar.expander("Research Questions", expanded=False):
 - How do key socioeconomic indicators influence economic risk?
 - What are the distributions and patterns of these indicators across counties?
 - Are there geographic patterns in economic risk across states or regions?
-- Can multiple indicators be combined into a clear and interpretable economic risk score?
 """)
 
 with st.sidebar.expander("Indicators Used", expanded=False):
