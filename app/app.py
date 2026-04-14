@@ -55,11 +55,13 @@ st.markdown(
 
         .hero {
             padding: 1.6rem 1.8rem;
-            border-radius: 24px;
+            border-radius: 24px;  /* increase slightly for smoother look */
             background: linear-gradient(135deg, #12344d 0%, #1d4f73 60%, #3b82f6 100%);
             color: white;
             box-shadow: 0 12px 30px rgba(18, 52, 77, 0.18);
             margin-bottom: 1.25rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.15);
         }
 
         .hero h1 {
