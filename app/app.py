@@ -236,6 +236,7 @@ st.sidebar.markdown(
     <div class="sidebar-card">
         <h3>Project Overview</h3>
         <p><strong>Project Title</strong><br>Identifying U.S. Counties at Risk of Economic Decline</p>
+        <p><strong>Author</strong><br>Aadityaa Dava</p>
         <p><strong>Purpose</strong><br>Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators.</p>
     </div>
     """,
@@ -303,17 +304,15 @@ st.markdown('<div class="section-card">', unsafe_allow_html=True)
 st.subheader("Summary Metrics")
 st.markdown('<div class="mini-note">A quick overview of the currently filtered counties.</div>', unsafe_allow_html=True)
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3 = st.columns(3)
 
 total_counties = len(filtered_df)
 avg_risk = filtered_df["economic_risk_score"].mean() if not filtered_df.empty else 0.0
 high_risk_count = int((filtered_df["risk_category"] == "High Risk").sum()) if not filtered_df.empty else 0
-median_income = filtered_df["median_household_income"].median() if not filtered_df.empty else 0.0
 
 col1.metric("Total Counties", f"{total_counties:,}")
 col2.metric("Average Risk Score", f"{avg_risk:.3f}")
 col3.metric("High Risk Counties", f"{high_risk_count:,}")
-col4.metric("Median Income", f"${median_income:,.0f}")
 
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -436,39 +435,6 @@ with col2:
         st.plotly_chart(fig_bar, use_container_width=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
-st.subheader("Income vs Poverty Relationship")
-st.markdown(
-    '<div class="mini-note">Bubble size represents total population; color indicates risk category.</div>',
-    unsafe_allow_html=True,
-)
-
-if filtered_df.empty:
-    st.info("No data available for the selected filters.")
-else:
-    fig_scatter = px.scatter(
-        filtered_df,
-        x="median_household_income",
-        y="poverty_rate",
-        size="total_population",
-        color="risk_category",
-        hover_name="county",
-        hover_data={
-            "state": True,
-            "economic_risk_score": ":.3f",
-            "unemployment_rate": ":.2%",
-            "bachelors_or_higher_pct": ":.2%",
-            "homeownership_rate": ":.2%",
-            "total_population": ":,",
-        },
-        color_discrete_map=RISK_COLORS,
-        category_orders={"risk_category": RISK_ORDER},
-    )
-    apply_plot_layout(fig_scatter, height=520)
-    st.plotly_chart(fig_scatter, use_container_width=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
 # Tables
