@@ -217,12 +217,6 @@ st.markdown(
             Interactive county-level analysis built from ACS 5-year socioeconomic indicators
             and a transparent composite economic risk score.
         </p>
-        <div class="badge-row">
-            <span class="badge">ACS 5-Year Data</span>
-            <span class="badge">Plotly Visuals</span>
-            <span class="badge">Streamlit App</span>
-            <span class="badge">County Risk Analysis</span>
-        </div>
     </div>
     """,
     unsafe_allow_html=True,
