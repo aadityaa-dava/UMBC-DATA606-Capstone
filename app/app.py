@@ -133,6 +133,9 @@ st.markdown(
         h2, h3 {
             color: #12344d !important;
         }
+        section[data-testid="stSidebar"] > div {
+            padding-top: 1rem;
+        }
     </style>
     """,
     unsafe_allow_html=True,
