@@ -1,73 +1,112 @@
-import streamlit as st
+import json
+from pathlib import Path
+from urllib.request import urlopen
+
 import pandas as pd
 import plotly.express as px
-from pathlib import Path
-import json
-import urllib.request
+import plotly.graph_objects as go
+import streamlit as st
 
 # -------------------------------------------------------
 # Page Config
 # -------------------------------------------------------
 st.set_page_config(
     page_title="County Economic Risk Dashboard",
-    page_icon="🇺🇸",
-    layout="wide"
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 # -------------------------------------------------------
-# Custom CSS Styling - Light Theme
+# Constants
+# -------------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent
+DATA_PATH = BASE_DIR.parent / "data" / "county_risk_app_ready.csv"
+COUNTY_GEOJSON_URL = "https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json"
+
+RISK_ORDER = ["Low Risk", "Medium Risk", "High Risk"]
+RISK_COLORS = {
+    "Low Risk": "#22c55e",
+    "Medium Risk": "#f59e0b",
+    "High Risk": "#ef4444",
+}
+
+PLOT_BG = "#ffffff"
+PAPER_BG = "#ffffff"
+TEXT_COLOR = "#12344d"
+MUTED_TEXT = "#64748b"
+CARD_BORDER = "#e2e8f0"
+APP_BG = "#f8fafc"
+
+# -------------------------------------------------------
+# Custom CSS
 # -------------------------------------------------------
 st.markdown(
     """
     <style>
         .stApp {
-            background-color: #f7f9fc;
-            color: #1f2937;
+            background: linear-gradient(180deg, #f8fafc 0%, #eef4fb 100%);
+            color: #12344d;
         }
 
         .block-container {
-            padding-top: 2rem;
+            padding-top: 1.5rem;
             padding-bottom: 2rem;
             padding-left: 2rem;
             padding-right: 2rem;
+            max-width: 1400px;
         }
 
-        h1, h2, h3 {
-            color: #12344d !important;
+        .hero {
+            padding: 1.6rem 1.8rem;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #12344d 0%, #1d4f73 60%, #3b82f6 100%);
+            color: white;
+            box-shadow: 0 12px 30px rgba(18, 52, 77, 0.18);
+            margin-bottom: 1.25rem;
         }
 
-        .dashboard-title {
-            font-size: 2.5rem;
+        .hero h1 {
+            margin: 0;
+            font-size: 2.2rem;
             font-weight: 800;
-            color: #12344d;
-            margin-bottom: 0.2rem;
+            color: white !important;
         }
 
-        .dashboard-subtitle {
+        .hero p {
+            margin: 0.45rem 0 0 0;
             font-size: 1rem;
-            color: #5b6b7a;
-            margin-bottom: 1.5rem;
+            color: rgba(255,255,255,0.92);
         }
 
         .section-card {
-            background: white;
-            padding: 1.2rem;
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(8px);
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 1.1rem 1.15rem;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
             margin-bottom: 1rem;
         }
 
+        .mini-note {
+            color: #64748b;
+            font-size: 0.92rem;
+            margin-top: -0.2rem;
+            margin-bottom: 0.75rem;
+        }
+
         [data-testid="stMetric"] {
-            background: white;
-            border: 1px solid #e5e7eb;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border: 1px solid #e2e8f0;
             padding: 16px;
-            border-radius: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 18px;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
         }
 
         [data-testid="stMetricLabel"] {
             color: #64748b !important;
+            font-weight: 600;
         }
 
         [data-testid="stMetricValue"] {
@@ -75,163 +114,201 @@ st.markdown(
         }
 
         [data-testid="stSidebar"] {
-            background-color: #eef3f8;
-            border-right: 1px solid #dde6ef;
-        }
-
-        .small-note {
-            color: #64748b;
-            font-size: 0.9rem;
+            background: linear-gradient(180deg, #eef4fb 0%, #f8fbff 100%);
+            border-right: 1px solid #dbe7f3;
         }
 
         .sidebar-card {
-            background-color: #ffffff;
+            background: white;
             padding: 16px;
-            border-radius: 14px;
-            border: 1px solid #dde6ef;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
+            border-radius: 16px;
+            border: 1px solid #dbe7f3;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+            margin-bottom: 14px;
         }
 
         .sidebar-card h3 {
-            margin: 0 0 10px 0;
+            margin: 0 0 8px 0;
             color: #12344d !important;
-            font-size: 1.55rem;
-            font-weight: 700;
+            font-size: 1.25rem;
+            font-weight: 800;
         }
 
         .sidebar-card p {
             color: #334155;
-            margin: 0 0 12px 0;
-            line-height: 1.5;
-            font-size: 0.98rem;
+            margin: 0 0 10px 0;
+            line-height: 1.45;
+            font-size: 0.96rem;
         }
 
-        .sidebar-card strong {
-            color: #12344d;
+        .badge-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
         }
 
-        details {
-            background-color: #ffffff;
-            border: 1px solid #dde6ef;
-            border-radius: 10px;
-            padding: 0.35rem 0.6rem;
+        .badge {
+            display: inline-block;
+            padding: 0.45rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.18);
+            color: white;
+            font-size: 0.88rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        h2, h3 {
+            color: #12344d !important;
         }
     </style>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
 # -------------------------------------------------------
-# Header
+# Data Loading
 # -------------------------------------------------------
-st.markdown(
-    '<div class="dashboard-title">📊 U.S. County Economic Risk Dashboard</div>',
-    unsafe_allow_html=True
-)
+@st.cache_data(show_spinner=False)
+def load_data(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        raise FileNotFoundError(f"Data file not found: {path}")
+    df_ = pd.read_csv(path)
 
-st.markdown(
-    '<div class="dashboard-subtitle">Built from ACS 5-year county-level indicators and a transparent composite risk score.</div>',
-    unsafe_allow_html=True
-)
+    # Minimal cleaning
+    df_ = df_.dropna(subset=["risk_category"]).copy()
+    df_["state"] = df_["state"].astype(str)
+    df_["county"] = df_["county"].astype(str)
+    df_["risk_category"] = pd.Categorical(df_["risk_category"], categories=RISK_ORDER, ordered=True)
+    df_["county_fips"] = df_["county_fips"].astype(str).str.zfill(5)
 
-# -------------------------------------------------------
-# Load Data
-# -------------------------------------------------------
-BASE_DIR = Path(__file__).resolve().parent
-DATA_PATH = BASE_DIR.parent / "data" / "county_risk_app_ready.csv"
+    return df_
 
-@st.cache_data
-def load_data():
-    if not DATA_PATH.exists():
-        st.error(f"Data file not found at: {DATA_PATH}")
-        st.stop()
-    return pd.read_csv(DATA_PATH)
 
-@st.cache_data
-def load_geojson():
-    url = "https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json"
-    with urllib.request.urlopen(url) as response:
+@st.cache_data(show_spinner=False)
+def load_geojson() -> dict:
+    with urlopen(COUNTY_GEOJSON_URL) as response:
         return json.load(response)
 
-df = load_data()
-counties_geojson = load_geojson()
+
+try:
+    df = load_data(DATA_PATH)
+    counties_geojson = load_geojson()
+except Exception as e:
+    st.error(f"Failed to load app resources: {e}")
+    st.stop()
 
 # -------------------------------------------------------
-# Clean Data
+# Helper Functions
 # -------------------------------------------------------
-df = df.dropna(subset=["risk_category"]).copy()
-df["state"] = df["state"].astype(str)
-df["county"] = df["county"].astype(str)
-df["risk_category"] = df["risk_category"].astype(str)
-df["county_fips"] = df["county_fips"].astype(str).str.zfill(5)
+def apply_plot_layout(fig, height=420, title=None):
+    fig.update_layout(
+        height=height,
+        margin=dict(l=20, r=20, t=50 if title else 20, b=20),
+        paper_bgcolor=PAPER_BG,
+        plot_bgcolor=PLOT_BG,
+        font=dict(color=TEXT_COLOR),
+        legend_title_text="",
+        title=title,
+    )
+    return fig
+
+
+def metric_delta_label(value: float) -> str:
+    if value >= 0.66:
+        return "Higher risk concentration"
+    if value >= 0.33:
+        return "Moderate risk concentration"
+    return "Lower risk concentration"
+
+
+def make_download_csv(dataframe: pd.DataFrame) -> bytes:
+    return dataframe.to_csv(index=False).encode("utf-8")
+
 
 # -------------------------------------------------------
-# Sidebar: Project Details
+# Hero Header
+# -------------------------------------------------------
+st.markdown(
+    """
+    <div class="hero">
+        <h1>U.S. County Economic Risk Dashboard</h1>
+        <p>
+            Interactive county-level analysis built from ACS 5-year socioeconomic indicators,
+            with a transparent composite economic risk score and exploratory visual analytics.
+        </p>
+        <div class="badge-row">
+            <span class="badge">ACS 5-Year Estimates</span>
+            <span class="badge">Plotly Visuals</span>
+            <span class="badge">Streamlit App</span>
+            <span class="badge">County-Level Risk Scoring</span>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# -------------------------------------------------------
+# Sidebar
 # -------------------------------------------------------
 st.sidebar.markdown(
     """
-<div class="sidebar-card">
-    <h3>Project Details</h3>
-    <p><strong>Project Title</strong><br>Identifying U.S. Counties at Risk of Economic Decline</p>
-    <p><strong>Author</strong><br>Aadityaa Dava</p>
-    <p><strong>Purpose</strong><br>Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators.</p>
-</div>
+    <div class="sidebar-card">
+        <h3>Project Overview</h3>
+        <p><strong>Title</strong><br>Identifying U.S. Counties at Risk of Economic Decline</p>
+        <p><strong>Purpose</strong><br>Explore county-level socioeconomic indicators and identify regions with elevated economic risk using a composite score.</p>
+    </div>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
-with st.sidebar.expander("Research Questions", expanded=False):
-    st.markdown("""
-- Which U.S. counties are at the highest risk of economic decline?  
-- How do key socioeconomic indicators (income, poverty, unemployment, education, and homeownership) influence economic risk?
-- What are the distributions and patterns of these socioeconomic indicators across U.S. counties?
-- Are there geographic patterns in economic risk across different states or regions?
-- Can multiple indicators be combined into a clear and interpretable economic risk score?
-""")
-
 with st.sidebar.expander("Indicators Used", expanded=False):
-    st.markdown("""
+    st.markdown(
+        """
 - Median Household Income  
 - Poverty Rate  
 - Unemployment Rate  
 - Bachelor's Degree or Higher (%)  
 - Homeownership Rate
-""")
+        """
+    )
 
-with st.sidebar.expander("Risk Score Methodology", expanded=False):
-    st.markdown("""
-The economic risk score is based on five normalized indicators.
+with st.sidebar.expander("Risk Score Logic", expanded=False):
+    st.markdown(
+        """
+Higher risk is associated with:
+- lower income
+- higher poverty
+- higher unemployment
+- lower education
+- lower homeownership
 
-Higher risk is assigned to counties with:
-- lower income  
-- higher poverty  
-- higher unemployment  
-- lower education  
-- lower homeownership  
+The final economic risk score is the average of normalized indicator contributions.
+        """
+    )
 
-The final score is the average of these adjusted normalized values.
-""")
+with st.sidebar.expander("Research Questions", expanded=False):
+    st.markdown(
+        """
+- Which counties appear most economically vulnerable?
+- Which indicators are most associated with elevated risk?
+- How do patterns differ across states?
+- What geographic trends emerge from the risk score?
+        """
+    )
 
-with st.sidebar.expander("Data Source", expanded=False):
-    st.markdown("""
-U.S. Census Bureau  
-American Community Survey (ACS) 5-Year Estimates
-""")
-
-# -------------------------------------------------------
-# Sidebar: Filters
-# -------------------------------------------------------
 st.sidebar.markdown("---")
-st.sidebar.header("Filters")
+st.sidebar.subheader("Filters")
 
 state_options = ["All"] + sorted(df["state"].unique().tolist())
 selected_state = st.sidebar.selectbox("State", state_options)
 
-selected_risk = st.sidebar.selectbox(
-    "Risk Category",
-    ["All", "Low Risk", "Medium Risk", "High Risk"],
-    index=0
+selected_risk = st.sidebar.selectbox("Risk Category", ["All"] + RISK_ORDER)
+
+sort_choice = st.sidebar.radio(
+    "Ranking View",
+    ["Highest Risk", "Lowest Risk"],
+    horizontal=False,
 )
 
 filtered_df = df.copy()
@@ -243,81 +320,72 @@ if selected_risk != "All":
     filtered_df = filtered_df[filtered_df["risk_category"] == selected_risk]
 
 # -------------------------------------------------------
-# Summary Metrics
+# Metrics
 # -------------------------------------------------------
 st.markdown('<div class="section-card">', unsafe_allow_html=True)
-
 st.subheader("Summary Metrics")
-col1, col2, col3 = st.columns(3)
+st.markdown('<div class="mini-note">A quick overview of the currently filtered counties.</div>', unsafe_allow_html=True)
 
-col1.metric("Total Counties", len(filtered_df))
+col1, col2, col3, col4 = st.columns(4)
 
-avg_risk = filtered_df["economic_risk_score"].mean() if not filtered_df.empty else 0
-col2.metric("Average Risk Score", f"{avg_risk:.3f}")
+total_counties = len(filtered_df)
+avg_risk = filtered_df["economic_risk_score"].mean() if not filtered_df.empty else 0.0
+high_risk_count = int((filtered_df["risk_category"] == "High Risk").sum()) if not filtered_df.empty else 0
+median_income = filtered_df["median_household_income"].median() if not filtered_df.empty else 0.0
 
-high_risk = (filtered_df["risk_category"] == "High Risk").sum() if not filtered_df.empty else 0
-col3.metric("High Risk Counties", int(high_risk))
+col1.metric("Total Counties", f"{total_counties:,}")
+col2.metric("Average Risk Score", f"{avg_risk:.3f}", delta=metric_delta_label(avg_risk))
+col3.metric("High Risk Counties", f"{high_risk_count:,}")
+col4.metric("Median Income", f"${median_income:,.0f}")
 
 st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
-# U.S. County Risk Map
+# Main Tabs
 # -------------------------------------------------------
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
-st.subheader("U.S. County Economic Risk Map")
+tab1, tab2, tab3, tab4 = st.tabs(["Risk Map", "Indicator Analysis", "County Explorer", "Data Table"])
 
-if not filtered_df.empty:
-    fig_map = px.choropleth(
-        filtered_df,
-        geojson=counties_geojson,
-        locations="county_fips",
-        featureidkey="id",
-        color="risk_category",
-        scope="usa",
-        hover_name="county",
-        hover_data={
-            "state": True,
-            "economic_risk_score": ":.3f",
-            "median_household_income": ":,.0f",
-            "poverty_rate": ":.2%",
-            "unemployment_rate": ":.2%",
-            "bachelors_or_higher_pct": ":.2%",
-            "homeownership_rate": ":.2%",
-            "county_fips": False,
-            "risk_category": True
-        },
-        color_discrete_map={
-            "Low Risk": "green",
-            "Medium Risk": "orange",
-            "High Risk": "red"
-        },
-        category_orders={"risk_category": ["Low Risk", "Medium Risk", "High Risk"]},
-        title="County-Level Economic Risk Across the United States"
+# -------------------------------------------------------
+# Tab 1: Map
+# -------------------------------------------------------
+with tab1:
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.subheader("County Economic Risk Map")
+    st.markdown(
+        '<div class="mini-note">Explore how risk levels vary geographically across counties.</div>',
+        unsafe_allow_html=True,
     )
 
-    fig_map.update_traces(
-        marker_line_color="#ffffff",
-        marker_line_width=0.25
-    )
-
-    if selected_state == "All":
-        fig_map.update_geos(
-            visible=True,
-            showland=True,
-            landcolor="#f8fafc",
-            bgcolor="white",
-            showcountries=False,
-            showcoastlines=False,
-            showsubunits=True,
-            subunitcolor="#94a3b8",
-            subunitwidth=0.6,
-            showlakes=False,
-            fitbounds=False
-        )
+    if filtered_df.empty:
+        st.warning("No counties match the selected filters.")
     else:
-        fig_map.update_geos(
+        fig_map = px.choropleth(
+            filtered_df,
+            geojson=counties_geojson,
+            locations="county_fips",
+            featureidkey="id",
+            color="risk_category",
+            hover_name="county",
+            scope="usa",
+            category_orders={"risk_category": RISK_ORDER},
+            color_discrete_map=RISK_COLORS,
+            hover_data={
+                "state": True,
+                "economic_risk_score": ":.3f",
+                "median_household_income": ":,.0f",
+                "poverty_rate": ":.2%",
+                "unemployment_rate": ":.2%",
+                "bachelors_or_higher_pct": ":.2%",
+                "homeownership_rate": ":.2%",
+                "county_fips": False,
+                "risk_category": True,
+            },
+        )
+
+        fig_map.update_traces(marker_line_color="#ffffff", marker_line_width=0.2)
+
+        geo_kwargs = dict(
             visible=True,
-            fitbounds="locations",
             showland=True,
             landcolor="#f8fafc",
             bgcolor="white",
@@ -325,167 +393,224 @@ if not filtered_df.empty:
             showcoastlines=False,
             showsubunits=True,
             subunitcolor="#94a3b8",
-            subunitwidth=0.7,
-            showlakes=False
+            showlakes=False,
         )
 
-    fig_map.update_layout(
-        height=650,
-        margin=dict(l=0, r=0, t=50, b=0),
-        paper_bgcolor="white",
-        plot_bgcolor="white",
-        legend_title_text="Risk Category"
+        if selected_state == "All":
+            fig_map.update_geos(fitbounds=False, subunitwidth=0.6, **geo_kwargs)
+        else:
+            fig_map.update_geos(fitbounds="locations", subunitwidth=0.7, **geo_kwargs)
+
+        fig_map.update_layout(
+            height=680,
+            margin=dict(l=0, r=0, t=20, b=0),
+            paper_bgcolor="white",
+            plot_bgcolor="white",
+            legend_title_text="Risk Category",
+        )
+
+        st.plotly_chart(fig_map, use_container_width=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# -------------------------------------------------------
+# Tab 2: Indicator Analysis
+# -------------------------------------------------------
+with tab2:
+    left, right = st.columns(2)
+
+    with left:
+        st.markdown('<div class="section-card">', unsafe_allow_html=True)
+        st.subheader("Risk Score Distribution")
+
+        if filtered_df.empty:
+            st.info("No data available for the selected filters.")
+        else:
+            fig_hist = px.histogram(
+                filtered_df,
+                x="economic_risk_score",
+                nbins=40,
+                color_discrete_sequence=["#1d4f73"],
+            )
+            apply_plot_layout(fig_hist, height=420)
+            st.plotly_chart(fig_hist, use_container_width=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with right:
+        st.markdown('<div class="section-card">', unsafe_allow_html=True)
+        st.subheader("Risk Category Breakdown")
+
+        if filtered_df.empty:
+            st.info("No data available for the selected filters.")
+        else:
+            counts = (
+                filtered_df["risk_category"]
+                .value_counts()
+                .reindex(RISK_ORDER, fill_value=0)
+                .rename_axis("Risk")
+                .reset_index(name="Count")
+            )
+
+            fig_bar = px.bar(
+                counts,
+                x="Risk",
+                y="Count",
+                text="Count",
+                color="Risk",
+                color_discrete_map=RISK_COLORS,
+                category_orders={"Risk": RISK_ORDER},
+            )
+            apply_plot_layout(fig_bar, height=420)
+            fig_bar.update_traces(textposition="outside")
+            st.plotly_chart(fig_bar, use_container_width=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.subheader("Income vs Poverty Relationship")
+    st.markdown(
+        '<div class="mini-note">Bubble size represents total population; color indicates risk category.</div>',
+        unsafe_allow_html=True,
     )
 
-    st.plotly_chart(fig_map, use_container_width=True)
-else:
-    st.warning("No counties match the selected filters.")
+    if filtered_df.empty:
+        st.info("No data available for the selected filters.")
+    else:
+        fig_scatter = px.scatter(
+            filtered_df,
+            x="median_household_income",
+            y="poverty_rate",
+            size="total_population",
+            color="risk_category",
+            hover_name="county",
+            hover_data={
+                "state": True,
+                "economic_risk_score": ":.3f",
+                "unemployment_rate": ":.2%",
+                "bachelors_or_higher_pct": ":.2%",
+                "homeownership_rate": ":.2%",
+                "total_population": ":,",
+            },
+            color_discrete_map=RISK_COLORS,
+            category_orders={"risk_category": RISK_ORDER},
+        )
+        apply_plot_layout(fig_scatter, height=520)
+        st.plotly_chart(fig_scatter, use_container_width=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------------------------------
-# Charts
-# Show risk category distribution only when a specific state is selected
+# Tab 3: County Explorer
 # -------------------------------------------------------
-if selected_state != "All":
+with tab3:
+    st.markdown('<div class="section-card">', unsafe_allow_html=True)
+    st.subheader("County Explorer")
+
+    if filtered_df.empty:
+        st.info("No counties available for the current filters.")
+    else:
+        county_labels = (
+            filtered_df["county"] + ", " + filtered_df["state"]
+        ).sort_values().tolist()
+
+        selected_county_label = st.selectbox("Select a county", county_labels)
+
+        county_name, state_name = selected_county_label.split(", ", 1)
+        selected_row = filtered_df[
+            (filtered_df["county"] == county_name) & (filtered_df["state"] == state_name)
+        ].iloc[0]
+
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Risk Category", selected_row["risk_category"])
+        c2.metric("Risk Score", f"{selected_row['economic_risk_score']:.3f}")
+        c3.metric("Median Income", f"${selected_row['median_household_income']:,.0f}")
+
+        radar_df = pd.DataFrame(
+            {
+                "Indicator": [
+                    "Poverty Rate",
+                    "Unemployment Rate",
+                    "Bachelor's+",
+                    "Homeownership",
+                ],
+                "Value": [
+                    selected_row["poverty_rate"] * 100,
+                    selected_row["unemployment_rate"] * 100,
+                    selected_row["bachelors_or_higher_pct"] * 100,
+                    selected_row["homeownership_rate"] * 100,
+                ],
+            }
+        )
+
+        fig_radar = go.Figure()
+        fig_radar.add_trace(
+            go.Scatterpolar(
+                r=radar_df["Value"],
+                theta=radar_df["Indicator"],
+                fill="toself",
+                name=selected_county_label,
+                line=dict(color="#1d4f73"),
+            )
+        )
+        fig_radar.update_layout(
+            polar=dict(radialaxis=dict(visible=True)),
+            showlegend=False,
+            height=500,
+            paper_bgcolor="white",
+            plot_bgcolor="white",
+            font=dict(color=TEXT_COLOR),
+            margin=dict(l=20, r=20, t=30, b=20),
+        )
+        st.plotly_chart(fig_radar, use_container_width=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# -------------------------------------------------------
+# Tab 4: Rankings + Data Preview
+# -------------------------------------------------------
+with tab4:
     col1, col2 = st.columns(2)
 
     with col1:
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.subheader("Risk Category Distribution")
+        st.subheader("County Rankings")
 
-        if not filtered_df.empty:
-            counts = filtered_df["risk_category"].value_counts().reset_index()
-            counts.columns = ["Risk", "Count"]
-
-            fig = px.bar(
-                counts,
-                x="Risk",
-                y="Count",
-                color="Risk",
-                text="Count",
-                color_discrete_map={
-                    "Low Risk": "green",
-                    "Medium Risk": "orange",
-                    "High Risk": "red"
-                },
-                category_orders={"Risk": ["Low Risk", "Medium Risk", "High Risk"]}
-            )
-            fig.update_layout(
-                height=420,
-                margin=dict(l=20, r=20, t=20, b=20),
-                paper_bgcolor="white",
-                plot_bgcolor="white",
-                font=dict(color="#12344d")
-            )
-            st.plotly_chart(fig, use_container_width=True)
+        if filtered_df.empty:
+            st.info("No counties to display.")
         else:
-            st.warning("No data available for the selected filters.")
+            ascending = sort_choice == "Lowest Risk"
+            ranked = filtered_df.sort_values("economic_risk_score", ascending=ascending).head(10)
+            st.dataframe(
+                ranked[["state", "county", "economic_risk_score", "risk_category"]],
+                use_container_width=True,
+                hide_index=True,
+            )
+
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.subheader("Risk Score Distribution")
+        st.subheader("Filtered Dataset Preview")
+        st.markdown(
+            f'<div class="mini-note">Current shape: {filtered_df.shape[0]:,} rows × {filtered_df.shape[1]} columns</div>',
+            unsafe_allow_html=True,
+        )
 
-        if not filtered_df.empty:
-            fig = px.histogram(
-                filtered_df,
-                x="economic_risk_score",
-                nbins=40,
-                color_discrete_sequence=["#12344d"]
-            )
-            fig.update_layout(
-                height=420,
-                margin=dict(l=20, r=20, t=20, b=20),
-                paper_bgcolor="white",
-                plot_bgcolor="white",
-                font=dict(color="#12344d")
-            )
-            st.plotly_chart(fig, use_container_width=True)
+        if filtered_df.empty:
+            st.info("No rows available.")
         else:
-            st.warning("No data available for the selected filters.")
+            st.dataframe(filtered_df.head(25), use_container_width=True, hide_index=True)
+
         st.markdown('</div>', unsafe_allow_html=True)
 
-else:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.subheader("Risk Score Distribution")
-
-    if not filtered_df.empty:
-        fig = px.histogram(
-            filtered_df,
-            x="economic_risk_score",
-            nbins=40,
-            color_discrete_sequence=["#12344d"]
-        )
-        fig.update_layout(
-            height=420,
-            margin=dict(l=20, r=20, t=20, b=20),
-            paper_bgcolor="white",
-            plot_bgcolor="white",
-            font=dict(color="#12344d")
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning("No data available for the selected filters.")
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
 # -------------------------------------------------------
-# Tables
-# -------------------------------------------------------
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.subheader("Top High-Risk Counties")
-
-    if not filtered_df.empty:
-        high = filtered_df.sort_values("economic_risk_score", ascending=False).head(10)
-        st.dataframe(
-            high[["state", "county", "economic_risk_score", "risk_category"]],
-            use_container_width=True,
-            hide_index=True
-        )
-    else:
-        st.info("No counties to display.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-with col2:
-    st.markdown('<div class="section-card">', unsafe_allow_html=True)
-    st.subheader("Top Low-Risk Counties")
-
-    if not filtered_df.empty:
-        low = filtered_df.sort_values("economic_risk_score", ascending=True).head(10)
-        st.dataframe(
-            low[["state", "county", "economic_risk_score", "risk_category"]],
-            use_container_width=True,
-            hide_index=True
-        )
-    else:
-        st.info("No counties to display.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# -------------------------------------------------------
-# Filtered Dataset Dropdown / Preview
-# -------------------------------------------------------
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
-
-with st.expander("Preview Filtered Dataset", expanded=False):
-    st.markdown(
-        f'<div class="small-note">Shape: {filtered_df.shape}</div>',
-        unsafe_allow_html=True
-    )
-    st.dataframe(filtered_df, use_container_width=True, hide_index=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-# -------------------------------------------------------
-# Sidebar: Download Filtered Data
+# Sidebar Download
 # -------------------------------------------------------
 st.sidebar.markdown("---")
 st.sidebar.download_button(
     label="Download Filtered Data",
-    data=filtered_df.to_csv(index=False).encode("utf-8"),
+    data=make_download_csv(filtered_df),
     file_name="filtered_county_risk_data.csv",
-    mime="text/csv"
+    mime="text/csv",
 )
