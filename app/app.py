@@ -104,8 +104,7 @@ st.markdown(
 
         [data-testid="stSidebar"] {
             background: linear-gradient(180deg, #eef4fb 0%, #f8fbff 100%);
-            border-right: 1px solid #dbe7f3;
-            padding-top: 0.1rem;            
+            border-right: 1px solid #dbe7f3;           
         }
 
         .sidebar-card {
