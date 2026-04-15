@@ -203,8 +203,7 @@ st.markdown(
     <div class="hero">
         <h1>U.S. County Economic Risk Dashboard</h1>
         <p>
-            Interactive county-level analysis built from ACS 5-year socioeconomic indicators
-            and a transparent composite economic risk score.
+            Interactive county-level analysis built from ACS 5-year socioeconomic indicators and composite economic risk score.
         </p>
     </div>
     """,
