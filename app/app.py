@@ -71,7 +71,7 @@ st.markdown(
             color: white;
             box-shadow: 0 12px 30px rgba(18, 52, 77, 0.18);
             margin-bottom: 1.5rem;
-            margin-top: 2rem;
+            margin-top: 2.1rem;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.15);
         }
