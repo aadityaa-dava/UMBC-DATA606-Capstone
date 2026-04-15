@@ -45,41 +45,34 @@ st.markdown(
             color: #12344d;
         }
 
+        /* Main content alignment */
         .block-container {
-            padding-top: 0rem;
+            padding-top: 0.8rem;
             padding-bottom: 2rem;
             padding-left: 2rem;
             padding-right: 2rem;
             max-width: 1400px;
         }
 
-        /* Sidebar spacing fixes */
+        /* Sidebar alignment */
         section[data-testid="stSidebar"] {
-            padding-top: 0rem !important;
-        }
-
-        section[data-testid="stSidebar"] > div {
-            padding-top: 0.8rem !important;
-        }
-
-        section[data-testid="stSidebar"] > div:first-child {
-            padding-top: 0rem !important;
-        }
-
-        [data-testid="stSidebar"] {
             background: linear-gradient(180deg, #eef4fb 0%, #f8fbff 100%);
             border-right: 1px solid #dbe7f3;
         }
 
+        section[data-testid="stSidebar"] > div:first-child {
+            padding-top: 0.8rem !important;
+        }
+
         .hero {
-            padding: 1rem 2rem;
+            padding: 1.8rem 2rem;
             border-radius: 24px;
             background: linear-gradient(135deg, #12344d 0%, #1d4f73 60%, #3b82f6 100%);
             color: white;
             box-shadow: 0 12px 30px rgba(18, 52, 77, 0.18);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             overflow: hidden;
-            border: 0.5rem solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.15);
         }
 
         .hero h1 {
@@ -126,6 +119,7 @@ st.markdown(
             border-radius: 16px;
             border: 1px solid #dbe7f3;
             box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+            margin-top: 0;
             margin-bottom: 14px;
         }
 
@@ -225,7 +219,7 @@ st.sidebar.markdown(
         <h3>Project Overview</h3>
         <p><strong>Project Title</strong><br>Identifying U.S. Counties at Risk of Economic Decline</p>
         <p><strong>Author</strong><br>Aadityaa Dava</p>
-        <p><strong>Purpose</strong><br>Identify counties at greater risk of economic decline using publicly available socioeconomic indicators.</p>
+        <p><strong>Purpose</strong><br>Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators.</p>
     </div>
     """,
     unsafe_allow_html=True,
