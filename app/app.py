@@ -79,7 +79,7 @@ st.markdown(
             box-shadow: 0 12px 30px rgba(18, 52, 77, 0.18);
             margin-bottom: 1rem;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 0.5rem solid rgba(255,255,255,0.15);
         }
 
         .hero h1 {
@@ -225,7 +225,7 @@ st.sidebar.markdown(
         <h3>Project Overview</h3>
         <p><strong>Project Title</strong><br>Identifying U.S. Counties at Risk of Economic Decline</p>
         <p><strong>Author</strong><br>Aadityaa Dava</p>
-        <p><strong>Purpose</strong><br>Identify counties that may be at greater risk of economic decline using publicly available socioeconomic indicators.</p>
+        <p><strong>Purpose</strong><br>Identify counties at greater risk of economic decline using publicly available socioeconomic indicators.</p>
     </div>
     """,
     unsafe_allow_html=True,
