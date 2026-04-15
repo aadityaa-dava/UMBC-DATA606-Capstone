@@ -46,20 +46,29 @@ st.markdown(
         }
 
         .block-container {
-            padding-top: 2rem;
+            padding-top: 1rem;
             padding-bottom: 2rem;
             padding-left: 2rem;
             padding-right: 2rem;
             max-width: 1400px;
         }
 
+        section[data-testid="stSidebar"] > div {
+            padding-top: 0.5rem;
+        }
+
+        [data-testid="stSidebar"] {
+            background: linear-gradient(180deg, #eef4fb 0%, #f8fbff 100%);
+            border-right: 1px solid #dbe7f3;
+        }
+
         .hero {
-            padding: 1rem 1rem;
+            padding: 1.8rem 2rem;
             border-radius: 24px;
             background: linear-gradient(135deg, #12344d 0%, #1d4f73 60%, #3b82f6 100%);
             color: white;
             box-shadow: 0 12px 30px rgba(18, 52, 77, 0.18);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             overflow: hidden;
             border: 1px solid rgba(255,255,255,0.15);
         }
@@ -102,17 +111,13 @@ st.markdown(
             color: #12344d !important;
         }
 
-        [data-testid="stSidebar"] {
-            background: linear-gradient(180deg, #eef4fb 0%, #f8fbff 100%);
-            border-right: 1px solid #dbe7f3;
-        }
-
         .sidebar-card {
             background: white;
             padding: 16px;
             border-radius: 16px;
             border: 1px solid #dbe7f3;
             box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+            margin-top: 0;
             margin-bottom: 14px;
         }
 
@@ -176,7 +181,6 @@ def apply_plot_layout(fig, height=420, title=None):
     )
     if title is not None:
         layout_kwargs["title"] = title
-
     fig.update_layout(**layout_kwargs)
     return fig
 
