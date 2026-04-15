@@ -46,7 +46,7 @@ st.markdown(
         }
 
         .block-container {
-            padding-top: 1rem;
+            padding-top: 0.8rem;
             padding-bottom: 2rem;
             padding-left: 2rem;
             padding-right: 2rem;
@@ -59,7 +59,7 @@ st.markdown(
         }
 
         section[data-testid="stSidebar"] > div {
-            padding-top: 0rem !important;
+            padding-top: 0.8rem !important;
         }
 
         section[data-testid="stSidebar"] > div:first-child {
