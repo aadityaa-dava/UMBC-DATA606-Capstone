@@ -22,65 +22,57 @@ This project aims to:
 
 ## 📂 Repository Structure
 
-├── app/
+**app/**
 
-app.py                      # Streamlit application
+|---|---app.py  _# Streamlit application_
 
-README.md
+|---|---README.md
 
-|
+**data/**
 
-├── data/
+|---|---ACSDT5Y2024.B01003-Data.csv   _# Population data_
 
-ACSDT5Y2024.B01003-Data.csv   # Population data
+|---|---ACSDT5Y2024.B15003-Data.csv   _# Education data_
 
-ACSDT5Y2024.B15003-Data.csv   # Education data
+|---|---ACSDT5Y2024.B17001-Data.csv  _ # Poverty data_
 
-ACSDT5Y2024.B17001-Data.csv   # Poverty data
+|---|---ACSDT5Y2024.B19013-Data.csv   _# Median income_
 
-ACSDT5Y2024.B19013-Data.csv   # Median income
+|---|---ACSDT5Y2024.B23025-Data.csv   _# Employment data_
 
-ACSDT5Y2024.B23025-Data.csv   # Employment data
+|---|---ACSDT5Y2024.B25003-Data.csv   _# Housing data_
 
-ACSDT5Y2024.B25003-Data.csv   # Housing data
+|---|---county_master.csv           _# Cleaned merged dataset_
 
-county_master.csv            # Cleaned merged dataset
+|---|---county_risk_app_ready.csv    _# Final dataset used in app_
 
-county_risk_app_ready.csv    # Final dataset used in app
+|---|---README.md
 
-README.md
+**docs/**
 
-│
+|---|---project report.md            _# Final report_
 
-├── docs/
+|---|---Resume.md
 
-project report.md            # Final report
+|---|---headshot.jpg
 
-Resume.md
+|---|---README.md
 
-headshot.jpg
+**notebooks/**
 
-README.md
+|---|---01_cleaning_preprocessing.ipynb
 
-│
+|---|---02_eda_economic_risk.ipynb
 
-├── notebooks/
+|---|---03_economic_risk_modeling_and_validation.ipynb
 
-01_cleaning_preprocessing.ipynb
+|---|---04_visualisation_streamlit.ipynb
 
-02_eda_economic_risk.ipynb
+|---|---README.md
 
-03_economic_risk_modeling_and_validation.ipynb
+**requirements.txt**
 
-04_visualisation_streamlit.ipynb
-
-README.md
-
-│
-
-requirements.txt
-
-README.md
+**README.md**
 
 ---
 
