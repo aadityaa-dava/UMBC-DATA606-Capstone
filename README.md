@@ -161,8 +161,8 @@ These datasets are cleaned, merged, and transformed into a unified **county-leve
 
 ### 1. Clone the repository
 ```bash
-git clone <your-repo-link>
-cd UMBC-DATA-606-Capstone
+git clone https://github.com/aadityaa-dava/UMBC-DATA606-Capstone.git
+cd UMBC-DATA606-Capstone
 ```
 
 ### 2. Install dependencies
