@@ -165,3 +165,12 @@ pip install -r requirements.txt
 ```bash
 streamlit run app/app.py
 ```
+### 🙋‍♀️ Author
+
+Aadityaa Dava
+
+Graduate Student – Data Science
+
+University of Maryland, Baltimore County (UMBC)
+
+🔗 LinkedIn: https://www.linkedin.com/in/aadityaa-dava-688908308
