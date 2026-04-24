@@ -1,11 +1,13 @@
 # U.S. County Economic Risk Analysis
 
+---
+
 ## 1. Title and Author
 
 - **Project Title**: Identifying U.S. Counties at Risk of Economic Decline Using Public Socioeconomic Indicators  
 - **Author**: Aadityaa Dava  
-- **Semester**: Spring'26  
-- **Program**: Masters in Data Science
+- **Semester**: Spring 2026  
+- **Program**: Master’s in Data Science  
 - **Instructor**: Dr. Chaojie (Jay) Wang  
 
 - **GitHub Repository**:  
@@ -18,44 +20,49 @@
 
 ## 2. Background
 
-### What is this project about?
+### Project Overview
 
-This project focuses on identifying counties in the United States that may be at risk of economic decline using data from the American Community Survey (ACS).
+This project aims to identify U.S. counties that may be at risk of economic decline using publicly available data from the **American Community Survey (ACS)**.
 
-Key socioeconomic indicators used include:
-- income
-- poverty
-- unemployment
-- education
-- homeownership
+Key socioeconomic indicators used in the analysis include:
+
+- Median household income  
+- Poverty rate  
+- Unemployment rate  
+- Educational attainment  
+- Homeownership rate  
 
 These indicators are combined into a **composite economic risk score**, which is used to classify counties into:
+
 - Low Risk  
 - Medium Risk  
 - High Risk  
 
 The results are presented through:
-- interactive visualizations  
-- a Streamlit dashboard  
-- an interpretable scoring methodology  
+
+- Interactive visualizations  
+- A Streamlit-based dashboard  
+- An interpretable scoring methodology  
 
 ---
 
-### Why does this matter?
+### Motivation
 
-Economic decline directly affects:
-- employment opportunities  
-- income levels  
-- poverty rates  
-- housing stability  
-- access to education and healthcare  
+Economic decline impacts multiple aspects of community well-being, including:
 
-By identifying high-risk counties, this project helps highlight areas that may need:
-- policy attention  
-- economic support  
-- targeted interventions  
+- Employment opportunities  
+- Income levels  
+- Poverty conditions  
+- Housing stability  
+- Access to education and healthcare  
 
-Additionally, this project demonstrates how publicly available data can be transformed into **actionable insights**.
+By identifying high-risk counties, this project helps highlight regions that may require:
+
+- Policy attention  
+- Economic investment  
+- Targeted interventions  
+
+Additionally, this work demonstrates how publicly available data can be transformed into **actionable insights for decision-making**.
 
 ---
 
@@ -63,8 +70,8 @@ Additionally, this project demonstrates how publicly available data can be trans
 
 1. Which U.S. counties are at the highest risk of economic decline?  
 2. How do income, poverty, unemployment, education, and homeownership influence economic risk?  
-3. What are the distributions and patterns of these indicators across counties?  
-4. Are there geographic patterns in economic risk across states or regions?  
+3. What patterns exist across counties for these indicators?  
+4. Are there geographic trends in economic risk?  
 5. Can multiple indicators be combined into a clear and interpretable risk score?  
 
 ---
@@ -73,50 +80,35 @@ Additionally, this project demonstrates how publicly available data can be trans
 
 ### Data Source
 
-This project uses data from the **U.S. Census Bureau – American Community Survey (ACS) 5-Year Estimates**.
+This project uses data from the **U.S. Census Bureau – American Community Survey (ACS) 5-Year Estimates (2019–2023)**.
 
 The ACS provides reliable, publicly available socioeconomic data at the county level.
 
 **Tables used:**
 
-- Total Population (B01003)  
-- Median Household Income (B19013)  
-- Poverty (B17001)  
-- Unemployment (B23025)  
-- Education (B15003)  
-- Homeownership (B25003)  
+- B01003 – Total Population  
+- B19013 – Median Household Income  
+- B17001 – Poverty Status  
+- B23025 – Employment Status  
+- B15003 – Educational Attainment  
+- B25003 – Housing Tenure  
 
 🔗 https://data.census.gov/table?g=010XX00US$0500000  
 
 ---
 
-### Data Size
+### Dataset Summary
 
-- ~10 MB  
-
-### Final Shape
-
-- Rows: **3,222 counties**  
-- Columns: **9+ features (including derived variables)**  
-
-### Time Period
-
-- **ACS 5-Year Estimates (2019–2023)**  
+- **Size**: ~10 MB  
+- **Rows**: 3,222 counties  
+- **Columns**: 9+ features (including engineered variables)  
+- **Time Period**: 2019–2023 (ACS 5-Year Estimates)  
 
 ---
 
-### What does each row represent?
+### Unit of Analysis
 
-Each row represents **one U.S. county**, including:
-
-- population  
-- income  
-- poverty rate  
-- unemployment rate  
-- education level  
-- homeownership rate  
-- calculated economic risk score  
-- risk category  
+Each row represents a **single U.S. county**, including demographic and socioeconomic indicators along with computed risk metrics.
 
 ---
 
@@ -125,22 +117,22 @@ Each row represents **one U.S. county**, including:
 | Column Name | Data Type | Description |
 |------------|----------|-------------|
 | county_fips | String | Unique 5-digit county identifier |
-| county_name | Text | County + State |
-| total_population | Integer | County population |
-| median_household_income | Float | Median income (USD) |
-| poverty_rate | Float | % below poverty line |
-| unemployment_rate | Float | % unemployed |
-| bachelors_or_higher_pct | Float | % with bachelor's degree |
-| homeownership_rate | Float | % owner-occupied housing |
-| renter_rate | Float | % renter-occupied housing |
-| economic_risk_score | Float | Composite risk score |
+| county_name | Text | County and state name |
+| total_population | Integer | Total population |
+| median_household_income | Float | Median household income (USD) |
+| poverty_rate | Float | Percentage below poverty line |
+| unemployment_rate | Float | Percentage unemployed |
+| bachelors_or_higher_pct | Float | Percentage with bachelor's degree or higher |
+| homeownership_rate | Float | Percentage of owner-occupied housing |
+| renter_rate | Float | Percentage of renter-occupied housing |
+| economic_risk_score | Float | Composite economic risk score |
 | risk_category | Category | Low / Medium / High |
 
 ---
 
 ### Target Variable
 
-- **risk_category (Low, Medium, High)**  
+- **risk_category** (Low, Medium, High)
 
 ---
 
@@ -152,7 +144,7 @@ Each row represents **one U.S. county**, including:
 - bachelors_or_higher_pct  
 - homeownership_rate  
 
-These variables directly represent economic conditions.
+These variables represent key dimensions of economic health.
 
 ---
 
@@ -160,152 +152,141 @@ These variables directly represent economic conditions.
 
 ### Overview
 
-Exploratory Data Analysis (EDA) was conducted to gain a deeper understanding of the dataset, validate data quality, and uncover meaningful patterns across U.S. counties.
+Exploratory Data Analysis (EDA) was conducted to understand the dataset, validate data quality, and uncover relationships between socioeconomic indicators.
 
-The analysis focused on the key socioeconomic indicators used to construct the economic risk score:
-- income
-- poverty
-- unemployment
-- education
-- homeownership
+The analysis focused on:
 
-The primary goals of EDA were to:
-- understand variable distributions  
-- identify relationships between indicators  
-- detect data quality issues  
-- ensure readiness for modeling and visualization  
+- Income  
+- Poverty  
+- Unemployment  
+- Education  
+- Homeownership  
+
+Key objectives:
+
+- Understand distributions  
+- Identify relationships  
+- Detect anomalies  
+- Prepare data for modeling  
 
 ---
 
-### Summary Statistics & Insights
-
-The dataset contains 3,222 U.S. counties, each with multiple socioeconomic indicators.
-
-Key observations:
+### Summary Statistics & Observations
 
 - **Median Household Income**
-  - Shows significant variation across counties  
-  - Indicates strong differences in economic strength and opportunity  
+  - Large variation across counties  
+  - Reflects economic disparities  
 
 - **Poverty Rate**
   - Right-skewed distribution  
-  - Most counties have moderate poverty, but a subset experiences very high poverty  
+  - Some counties exhibit very high poverty  
 
 - **Unemployment Rate**
   - Concentrated at lower values  
-  - Contains outliers representing economically distressed counties  
+  - Outliers indicate distressed regions  
 
-- **Education (Bachelor’s or Higher %)**
+- **Education Level**
   - Wide variation across counties  
-  - Reflects differences in workforce skill levels  
+  - Strong indicator of economic potential  
 
 - **Homeownership Rate**
-  - Generally high across counties  
-  - Still provides meaningful variation related to economic stability  
+  - Generally high but still informative  
+  - Linked to economic stability  
 
 - **Economic Risk Score**
-  - Effectively combines all indicators into a single interpretable metric  
-  - Allows direct comparison across counties  
+  - Combines multiple indicators into a single interpretable metric  
 
 ---
 
-### Visualizations (Plotly)
-
-Interactive visualizations were created using Plotly Express to explore patterns and relationships:
+### Visual Analysis (Plotly)
 
 #### Distribution Analysis
-- Histograms were used to analyze the spread and skewness of each indicator:
-  - median_household_income  
-  - poverty_rate  
-  - unemployment_rate  
-  - bachelors_or_higher_pct  
-  - homeownership_rate  
+Histograms were used to examine:
 
-These visualizations highlighted variability and outliers across counties.
+- Income  
+- Poverty  
+- Unemployment  
+- Education  
+- Homeownership  
+
+These revealed skewness, spread, and outliers.
+
+---
 
 #### Relationship Analysis
-- Scatter plots were used to understand relationships between variables:
-  - Income vs Poverty  
-  - Education vs Income  
-  - Unemployment vs Poverty  
+
+Scatter plots explored relationships such as:
+
+- Income vs Poverty  
+- Education vs Income  
+- Unemployment vs Poverty  
+
+---
 
 #### Correlation Analysis
-- A correlation heatmap was used to quantify relationships between variables:
-  - Income has a strong negative correlation with poverty  
-  - Income has a strong positive correlation with education  
-  - Poverty has a positive correlation with unemployment  
-  - Education has a negative relationship with poverty  
+
+A correlation heatmap showed:
+
+- Income negatively correlated with poverty  
+- Income positively correlated with education  
+- Poverty positively correlated with unemployment  
+- Education negatively correlated with poverty  
+
+---
 
 #### Risk-Based Analysis
-- Distribution of counties across risk categories  
-- Boxplots showing economic risk score across categories  
-- Bar charts comparing average indicators across risk groups  
 
-These visualizations confirmed that risk categories meaningfully separate counties based on economic conditions.
+- Distribution of counties across risk categories  
+- Boxplots of risk score by category  
+- Comparison of indicators across risk levels  
+
+These confirmed that the risk categories meaningfully differentiate counties.
 
 ---
 
 ### Key Relationships
 
-EDA revealed several strong and consistent relationships:
+- Higher income → Lower poverty  
+- Higher education → Higher income  
+- Higher unemployment → Higher poverty  
+- Higher homeownership → Greater stability  
 
-- **Income and Poverty**
-  - Higher income counties tend to have lower poverty rates  
-
-- **Education and Income**
-  - Higher education levels are strongly associated with higher income  
-
-- **Poverty and Unemployment**
-  - Counties with higher unemployment tend to experience higher poverty  
-
-- **Homeownership and Stability**
-  - Higher homeownership rates are associated with more economically stable counties  
-
-These relationships validate the choice of features used in the economic risk score.
+These relationships validate the feature selection for modeling.
 
 ---
 
 ### Data Quality Assessment
 
 #### Missing Values
-- Very few missing values were present in the dataset  
-- Missing values (e.g., income) were handled using **median imputation**  
-- After preprocessing, the dataset contained no critical missing data  
+- Minimal missing values  
+- Handled using **median imputation**  
 
-#### Duplicate Records
-- Duplicate counties were checked using `county_fips`  
-- No duplicate records were found in the final dataset  
+#### Duplicates
+- Checked using `county_fips`  
+- No duplicates found  
 
 ---
 
 ### Data Transformations
 
-Several preprocessing steps were necessary:
-
-- **Merging**
-  - Multiple ACS datasets were merged using `county_fips`  
-
-- **Feature Engineering**
-  - Converted raw counts into meaningful rates:
-    - poverty_rate  
-    - unemployment_rate  
-    - education percentage  
-    - homeownership rate  
-
-- **Splitting**
-  - `county_name` was split into separate `county` and `state` fields  
+- Merged multiple ACS datasets using `county_fips`  
+- Converted raw counts into rates  
+- Engineered meaningful features  
+- Split `county_name` into county and state  
 
 ---
 
 ### Key Findings
 
-- There is significant economic variation across U.S. counties  
-- Economic risk is influenced by multiple interrelated factors  
+- Significant economic variation exists across U.S. counties  
+- Economic risk is driven by multiple interrelated factors  
 - High-risk counties consistently show:
-  - lower income  
-  - higher poverty  
-  - higher unemployment  
-  - lower education  
-  - lower homeownership  
+  - Lower income  
+  - Higher poverty  
+  - Higher unemployment  
+  - Lower education  
+  - Lower homeownership  
 
-- The constructed risk score effectively captures these patterns  
+- The composite risk score effectively captures these patterns  
+
+---
