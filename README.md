@@ -3,7 +3,7 @@
 
 This repository contains the capstone project for **DATA 606 at the University of Maryland, Baltimore County (UMBC)**.
 
-The project analyzes **U.S. county-level socioeconomic data (ACS 2024)** to identify regions at risk of economic decline and uncover key contributing factors using data analysis, machine learning, and interactive visualization.
+The project analyzes **U.S. county-level socioeconomic data (American Community Survey (ACS) 5-Year Estimates (2024 release))** to identify regions at risk of economic decline and uncover key contributing factors using data analysis, machine learning, and interactive visualization.
 
 ---
 
