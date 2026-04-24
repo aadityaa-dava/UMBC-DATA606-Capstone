@@ -84,8 +84,6 @@ README.md
 
 ---
 
----
-
 ## 📊 Data
 
 The project uses **American Community Survey (ACS) 5-Year Estimates (2024)** datasets:
