@@ -50,9 +50,9 @@ This project aims to:
 
 **docs/**
 
-|---|---project report.md            _# Final report_
+|---|---project_report.md            _# Final report_
 
-|---|---Resume.md
+|---|---resume.md
 
 |---|---headshot.jpg
 
