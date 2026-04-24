@@ -34,7 +34,7 @@ This project aims to:
 
 |---|---ACSDT5Y2024.B15003-Data.csv   _# Education data_
 
-|---|---ACSDT5Y2024.B17001-Data.csv  _ # Poverty data_
+|---|---ACSDT5Y2024.B17001-Data.csv  _# Poverty data_
 
 |---|---ACSDT5Y2024.B19013-Data.csv   _# Median income_
 
