@@ -66,7 +66,7 @@ This project aims to:
 
 |---|---03_economic_risk_modeling_and_validation.ipynb
 
-|---|---04_visualisation_streamlit.ipynb
+|---|---04_visualization_streamlit.ipynb
 
 |---|---README.md
 
