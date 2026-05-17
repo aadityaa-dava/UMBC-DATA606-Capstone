@@ -1,4 +1,4 @@
-# 📊 UMBC-DATA-606 Capstone  
+# UMBC-DATA-606 Capstone  
 ## Identifying U.S. Counties at Risk of Economic Decline Using Public Socioeconomic Indicators
 
 This repository contains the capstone project for **DATA 606 at the University of Maryland, Baltimore County (UMBC)**.
@@ -7,7 +7,7 @@ The project analyzes **U.S. county-level socioeconomic data (American Community 
 
 ---
 
-## 🚀 Project Overview
+## Project Overview
 
 Economic decline is influenced by multiple socioeconomic indicators such as income, employment, education, and demographics.
 
@@ -20,7 +20,7 @@ This project aims to:
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 **app/**
 
@@ -76,7 +76,7 @@ This project aims to:
 
 ---
 
-## 📊 Data
+## Data
 
 The project uses **American Community Survey (ACS) 5-Year Estimates (2024)** datasets:
 
@@ -91,7 +91,7 @@ These datasets are cleaned, merged, and transformed into a unified **county-leve
 
 ---
 
-## 🔍 Methodology
+## Methodology
 
 ### 1. Data Cleaning & Preprocessing  
 📁 `notebooks/01_cleaning_preprocessing.ipynb`
@@ -132,7 +132,7 @@ These datasets are cleaned, merged, and transformed into a unified **county-leve
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Python**: Pandas, NumPy, Scikit-learn  
 - **Visualization**: Matplotlib, Seaborn, Plotly  
@@ -141,7 +141,7 @@ These datasets are cleaned, merged, and transformed into a unified **county-leve
 
 ---
 
-## 📈 Key Outcomes
+## Key Outcomes
 
 - Identified **counties at higher risk of economic decline**  
 - Determined **key socioeconomic drivers** influencing outcomes  
@@ -149,7 +149,7 @@ These datasets are cleaned, merged, and transformed into a unified **county-leve
 
 ---
 
-## ▶️ How to Run
+## How to Run
 
 ### 1. Clone the repository
 ```bash
@@ -165,7 +165,7 @@ pip install -r requirements.txt
 ```bash
 streamlit run app/app.py
 ```
-### 🙋‍♀️ Author
+### Author
 
 Aadityaa Dava
 
