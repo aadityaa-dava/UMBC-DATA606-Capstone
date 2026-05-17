@@ -1,29 +1,36 @@
-# UMBC-DATA-606 Capstone  
-## Identifying U.S. Counties at Risk of Economic Decline Using Public Socioeconomic Indicators
+# UMBC-DATA606 Capstone
 
-This repository contains the capstone project for **DATA 606 at the University of Maryland, Baltimore County (UMBC)**.
+# Identifying U.S. Counties at Risk of Economic Decline Using Public Socioeconomic Indicators
 
-The project analyzes **U.S. county-level socioeconomic data (American Community Survey (ACS) 5-Year Estimates (2024 release))** to identify regions at risk of economic decline and uncover key contributing factors using data analysis, machine learning, and interactive visualization.
+This repository contains the capstone project for **DATA 606 – Capstone in Data Science** at the **University of Maryland, Baltimore County (UMBC)**.
+
+The project analyzes **U.S. county-level socioeconomic indicators** using publicly available data from the **American Community Survey (ACS) 5-Year Estimates** to identify counties at risk of economic decline through data analysis, risk modeling, and interactive visualization.
 
 ---
 
-## Project Overview
+# Project Overview
 
-Economic decline is influenced by multiple socioeconomic indicators such as income, employment, education, and demographics.
+Economic decline is influenced by multiple interconnected socioeconomic factors such as:
+- Income
+- Poverty
+- Employment
+- Education
+- Housing stability
 
 This project aims to:
+- Analyze county-level socioeconomic indicators
+- Identify regional economic disparities across U.S. counties
+- Develop a composite economic risk scoring methodology
+- Categorize counties into risk groups
+- Build an interactive Streamlit dashboard for exploration and visualization
 
-- Analyze **county-level socioeconomic indicators (ACS data)**
-- Identify **regional disparities across U.S. counties**
-- Build models to detect **counties at risk of economic decline**
-- Develop an **interactive Streamlit application** for data exploration
+The project demonstrates how publicly available government datasets can be transformed into actionable insights using data science methodologies.
 
 ---
 
-## Repository Structure
+# Repository Structure
 
 ```text
-
 UMBC-DATA606-Capstone/
 │
 ├── app/
@@ -42,6 +49,7 @@ UMBC-DATA606-Capstone/
 │   └── README.md
 │
 ├── docs/
+│   ├── Final Presentation.pdf
 │   ├── project_report.md
 │   ├── resume.md
 │   ├── headshot.jpg
@@ -57,107 +65,201 @@ UMBC-DATA606-Capstone/
 ├── requirements.txt
 └── README.md
 ```
-**requirements.txt**
-
-**README.md**
 
 ---
 
-## Data
+# Project Objectives
 
-The project uses **American Community Survey (ACS) 5-Year Estimates (2024)** datasets:
+The primary objectives of this project are to:
 
-- **B01003** – Population  
-- **B15003** – Education  
-- **B17001** – Poverty  
-- **B19013** – Median Income  
-- **B23025** – Employment  
-- **B25003** – Housing  
-
-These datasets are cleaned, merged, and transformed into a unified **county-level dataset (`county_master.csv`)**.
+- Analyze county-level socioeconomic conditions across the United States
+- Identify counties potentially vulnerable to economic decline
+- Examine relationships between income, poverty, employment, education, and housing
+- Develop interpretable economic risk metrics
+- Create interactive visualizations and dashboards for data exploration
 
 ---
 
-## Methodology
+# Data Sources
 
-### 1. Data Cleaning & Preprocessing  
+The project uses datasets from the:
+
+## U.S. Census Bureau – American Community Survey (ACS) 5-Year Estimates (2019–2023)
+
+### ACS Tables Used
+
+| Dataset | Description |
+|---|---|
+| B01003 | Total Population |
+| B15003 | Educational Attainment |
+| B17001 | Poverty Status |
+| B19013 | Median Household Income |
+| B23025 | Employment Status |
+| B25003 | Housing Tenure |
+
+Data Source:  
+https://data.census.gov/
+
+---
+
+# Methodology
+
+The project follows a structured end-to-end data science workflow.
+
+## 1. Data Cleaning & Preprocessing
 📁 `notebooks/01_cleaning_preprocessing.ipynb`
 
-- Merged multiple ACS datasets  
-- Handled missing and inconsistent values  
-- Created a unified dataset (`county_master.csv`)  
+- Loaded multiple ACS datasets
+- Cleaned and standardized variables
+- Handled missing values
+- Merged datasets using county FIPS codes
+- Engineered socioeconomic indicators and rates
+
+### Output
+```text
+county_master.csv
+```
 
 ---
 
-### 2. Exploratory Data Analysis (EDA)  
+## 2. Exploratory Data Analysis (EDA)
 📁 `notebooks/02_eda_economic_risk.ipynb`
 
-- Analyzed distributions of socioeconomic indicators  
-- Identified regional disparities  
-- Explored correlations between variables  
+- Generated summary statistics
+- Explored variable distributions
+- Performed correlation analysis
+- Created interactive visualizations using Plotly
+- Identified socioeconomic patterns and disparities
 
 ---
 
-### 3. Economic Risk Modeling  
+## 3. Economic Risk Modeling
 📁 `notebooks/03_economic_risk_modeling_and_validation.ipynb`
 
-- Built models to identify counties at risk  
-- Evaluated model performance  
-- Identified key predictors of economic decline  
+- Developed a composite economic risk score
+- Combined multiple socioeconomic indicators
+- Categorized counties into:
+  - Low Risk
+  - Medium Risk
+  - High Risk
+- Validated the risk scoring methodology
 
 ---
 
-### 4. Visualization & Application  
-📁 `notebooks/04_visualisation_streamlit.ipynb`  
+## 4. Visualization & Dashboard Development
+📁 `notebooks/04_visualization_streamlit.ipynb`  
 📁 `app/app.py`
 
-- Developed an interactive **Streamlit application**
-- Enables:
-  - County-level exploration  
-  - Visualization of socioeconomic indicators  
-  - Insight-driven analysis  
+- Prepared application-ready datasets
+- Built interactive visualizations
+- Developed a Streamlit dashboard for county-level exploration
+
+### Output
+```text
+county_risk_app_ready.csv
+```
 
 ---
 
-## Tech Stack
+# Streamlit Dashboard
 
-- **Python**: Pandas, NumPy, Scikit-learn  
-- **Visualization**: Matplotlib, Seaborn, Plotly  
-- **Application**: Streamlit  
-- **Environment**: Jupyter Notebook  
+The project includes an interactive Streamlit application that allows users to:
 
----
-
-## Key Outcomes
-
-- Identified **counties at higher risk of economic decline**  
-- Determined **key socioeconomic drivers** influencing outcomes  
-- Built an **interactive dashboard** for exploration and insights  
+- Explore county-level socioeconomic indicators
+- Compare counties across economic measures
+- Analyze risk categories
+- Visualize trends and distributions
+- Interact with dynamic charts and filters
 
 ---
 
-## How to Run
+# Technologies Used
 
-### 1. Clone the repository
+| Category | Tools & Libraries |
+|---|---|
+| Programming | Python |
+| Data Analysis | Pandas, NumPy |
+| Visualization | Plotly, Matplotlib |
+| Machine Learning | Scikit-learn |
+| Dashboard | Streamlit |
+| Development | Jupyter Notebook |
+
+---
+
+# Key Findings
+
+The analysis revealed that counties with:
+- Higher poverty rates
+- Higher unemployment
+- Lower educational attainment
+- Lower household income
+- Lower homeownership rates
+
+tended to exhibit higher economic risk scores.
+
+The project successfully demonstrates how multiple socioeconomic indicators can be integrated into a clear and interpretable economic risk framework.
+
+---
+
+# How to Run the Project
+
+## 1. Clone the Repository
+
 ```bash
 git clone https://github.com/aadityaa-dava/UMBC-DATA606-Capstone.git
 cd UMBC-DATA606-Capstone
 ```
 
-### 2. Install dependencies
+---
+
+## 2. Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
-### 3. Run the Streamlit app
+
+---
+
+## 3. Run the Streamlit Application
+
 ```bash
 streamlit run app/app.py
 ```
-### Author
 
-Aadityaa Dava
+---
 
-Graduate Student – Data Science
+# Documentation
 
-University of Maryland, Baltimore County (UMBC)
+Additional project documentation is available in the `docs/` folder, including:
 
-🔗 LinkedIn: https://www.linkedin.com/in/aadityaa-dava-688908308
+- Final Presentation
+- Project Report
+- Resume
+- Supporting materials
+
+---
+
+# Future Improvements
+
+Potential future enhancements include:
+- Time-series economic analysis
+- Geographic mapping visualizations
+- Additional socioeconomic indicators
+- Advanced machine learning models
+- Cloud deployment of the dashboard
+
+---
+
+# Author
+
+## Aadityaa Dava
+
+Graduate Student – Data Science  
+
+University of Maryland, Baltimore County (UMBC)  
+
+GitHub:  
+https://github.com/aadityaa-dava
+
+LinkedIn:  
+https://www.linkedin.com/in/aadityaa-dava-688908308
