@@ -4,7 +4,7 @@ This folder contains supporting documentation and supplementary materials for th
 
 ## Identifying U.S. Counties at Risk of Economic Decline Using Public Socioeconomic Indicators
 
-The documents in this directory provide detailed explanations of the project methodology, findings, academic deliverables, and professional portfolio materials.
+The documents in this directory provide detailed explanations of the project methodology, findings, academic deliverables, presentation materials, and professional portfolio assets.
 
 ---
 
@@ -13,6 +13,7 @@ The documents in this directory provide detailed explanations of the project met
 ```text
 docs/
 │
+├── Final Presentation.pdf
 ├── project_report.md
 ├── resume.md
 ├── headshot.jpg
@@ -25,14 +26,31 @@ docs/
 
 | File | Description |
 |---|---|
+| `Final Presentation.pdf` | Final capstone presentation summarizing the project objectives, methodology, analysis, modeling, dashboard, and key findings |
 | `project_report.md` | Full capstone project report including methodology, analysis, modeling, and conclusions |
-| `resume.md` | Professional resume of the project author |
-| `headshot.jpg` | Profile image used for presentations and portfolio materials |
+| `resume.md` | Professional resume |
+| `headshot.jpg` | Profile image used in resume |
 | `README.md` | Documentation overview for this folder |
 
 ---
 
-## Project Report
+# Final Presentation
+
+The presentation provides a concise overview of the project, including:
+
+- Problem statement and motivation
+- Data sources and preprocessing workflow
+- Exploratory Data Analysis (EDA)
+- Economic risk modeling methodology
+- Dashboard demonstration
+- Key findings and insights
+- Conclusions and future work
+
+The presentation was prepared as part of the DATA 606 Capstone submission and serves as a visual summary of the project.
+
+---
+
+# Project Report
 
 The project report provides a comprehensive overview of the capstone project, including:
 
@@ -47,6 +65,8 @@ The project report provides a comprehensive overview of the capstone project, in
 The report documents the complete analytical workflow and summarizes the outcomes of the project.
 
 ---
+
+# Supporting Materials
 
 ## Resume
 
