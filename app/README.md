@@ -1,58 +1,108 @@
-# Application
+# 📱 Streamlit Application
 
-This folder contains the Streamlit-based web application for the capstone project:
+This folder contains the interactive Streamlit dashboard developed for the DATA 606 Capstone project:
 
-**Identifying U.S. Counties at Risk of Economic Decline Using Public Socioeconomic Indicators**
+## Identifying U.S. Counties at Risk of Economic Decline Using Public Socioeconomic Indicators
 
----
-
-## 📊 Overview
-
-The application provides an interactive interface to explore and analyze county-level economic risk across the United States using modeled socioeconomic data.
-
-Users can:
-
-- View economic risk scores for U.S. counties  
-- Explore key socioeconomic indicators  
-- Compare counties and identify high-risk regions  
-- Understand patterns contributing to economic decline  
+The application allows users to explore county-level socioeconomic indicators and analyze economic risk patterns across the United States using interactive visualizations and data-driven insights.
 
 ---
 
-## ⚙️ How to Run
+# Features
 
-From the root directory of the repository:
+The Streamlit application provides:
+
+- Interactive county-level data exploration
+- Economic risk score visualization
+- Socioeconomic indicator analysis
+- Dynamic charts and plots
+- Risk category comparisons
+- Geographic and statistical insights
+
+---
+
+# Data Used
+
+The application uses the processed dataset:
+
+```text
+county_risk_app_ready.csv
+```
+
+This dataset includes:
+
+- Median household income
+- Poverty rate
+- Unemployment rate
+- Educational attainment
+- Homeownership rate
+- Economic risk score
+- Risk categories
+
+---
+
+# Technologies Used
+
+- Streamlit
+- Pandas
+- Plotly
+- NumPy
+- Scikit-learn
+
+---
+
+# Running the Application
+
+## 1. Navigate to the project root directory
+
+```bash
+cd UMBC-DATA606-Capstone
+```
+
+## 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
+```
+
+## 3. Launch the Streamlit app
+
+```bash
 streamlit run app/app.py
 ```
 
-## 📁 Files
-|--app.py – Main Streamlit application script
+---
 
-|--README.md – Documentation for the application
+# Files in This Folder
 
-## 🧠 Data Source
+```text
+app/
+│
+├── app.py
+└── README.md
+```
 
-The application uses the processed dataset: _data/county_risk_app_ready.csv_
+| File | Description |
+|---|---|
+| `app.py` | Main Streamlit dashboard application |
+| `README.md` | Documentation for the application folder |
 
-This dataset is generated from the full pipeline, including:
+---
 
-- Data cleaning and preprocessing
+# Dashboard Capabilities
 
-- Exploratory data analysis (EDA)
+Users can:
 
-- Feature engineering
+- Explore county-level socioeconomic trends
+- Compare economic indicators across counties
+- Analyze distributions and correlations
+- Visualize economic risk categories
+- Interact with charts and filters dynamically
 
-- Economic risk modeling and validation
+---
 
-## 🎯 Purpose
+# Purpose of the Application
 
-This application translates the modeling results into an interactive tool that enables:
+The dashboard was developed to make socioeconomic data more accessible and interpretable through interactive analytics and visual storytelling.
 
-- Data-driven insights into regional economic risk
-
-- Exploration of socioeconomic disparities
-
-- Support for policy and research analysis
+It demonstrates how public data can be transformed into actionable insights for understanding economic disparities across U.S. counties.
