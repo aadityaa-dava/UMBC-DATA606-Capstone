@@ -20,16 +20,16 @@ Prepared for UMBC Data Science Master Degree Capstone by Dr. Chaojie (Jay) Wang
 ## Project Links
 
 ### GitHub Repository
-https://github.com/aadityaa-dava/UMBC-DATA606-Capstone
+[GitHub Repo link](https://github.com/aadityaa-dava/UMBC-DATA606-Capstone)
 
 ### LinkedIn Profile
-https://www.linkedin.com/in/aadityaa-dava-688908308
+[LinkedIn Profile link](https://www.linkedin.com/in/aadityaa-dava-688908308)
 
 ### PowerPoint Presentation File
-[Final Presentation PPT file](final_presentation.pdf)
+[Presentation file](final_presentation.pdf)
 
 ### YouTube Presentation Video
-Add YouTube link here
+[YouTube video link](https://youtu.be/CmFJ-8MSs6c)
 
 ---
 
